@@ -1,0 +1,37 @@
+Game
+-List of players
+-Board
+
+-GUI
+-Splash
+-Setup
+-CPU/Human Turn
+
+Board
+-Array of tiles
+-List of pieces
+-Adjacency Map
+
+-CalcTargets
+-PaintComponent
+-Setup
+
+Tile
+-Location
+-Color
+-EndTile boolean
+
+-Draw
+
+Abstract Piece
+-King + Normal child
+-Color
+-Location
+
+-Draw
+
+Player
+-CPU or 2P?
+-Color
+
+-makeMove
