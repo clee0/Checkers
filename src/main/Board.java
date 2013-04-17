@@ -207,7 +207,102 @@ public class Board extends JPanel {
 		}
 	}
 	
-	public void checkLocation(int row, int column) {
+	public void canJump(Piece piece, boolean king){
+		targets = new ArrayList<Tile>();
+		tempTarget = new Tile();
+		
+		if(king == false){
+			if(piece.getColor() == Color.white){
+				if(piece.getLocation().getX() == 0){
+					tempTarget.setTileColumn(((int)(piece.getLocation().getX())+2));
+					tempTarget.setTileRow(((int)(piece.getLocation().getY())-2));
+					targets.add(tempTarget);
+				}else if(piece.getLocation().getX() == 7){
+					tempTarget.setTileColumn(((int)(piece.getLocation().getX())-2));
+					tempTarget.setTileRow(((int)(piece.getLocation().getY())-2));
+					targets.add(tempTarget);
+				}else{
+					tempTarget.setTileColumn(((int)(piece.getLocation().getX())-2));
+					tempTarget.setTileRow(((int)(piece.getLocation().getY())-2));
+					targets.add(tempTarget);
+					tempTarget = new Tile();
+					tempTarget.setTileColumn(((int)(piece.getLocation().getX())+2));
+					tempTarget.setTileRow(((int)(piece.getLocation().getY())-2));
+					targets.add(tempTarget);
+				}
+			}else{
+				if(piece.getLocation().getX() == 0){
+					tempTarget.setTileColumn(((int)(piece.getLocation().getX())+2));
+					tempTarget.setTileRow(((int)(piece.getLocation().getY())+2));
+					targets.add(tempTarget);
+				}else if(piece.getLocation().getX() == 7){
+					tempTarget.setTileColumn(((int)(piece.getLocation().getX())-2));
+					tempTarget.setTileRow(((int)(piece.getLocation().getY())+2));
+					targets.add(tempTarget);
+				}else{
+					tempTarget.setTileColumn(((int)(piece.getLocation().getX())-2));
+					tempTarget.setTileRow(((int)(piece.getLocation().getY())+2));
+					targets.add(tempTarget);
+					tempTarget = new Tile();
+					tempTarget.setTileColumn(((int)(piece.getLocation().getX())+2));
+					tempTarget.setTileRow(((int)(piece.getLocation().getY())+2));
+					targets.add(tempTarget);
+				}
+			}
+		}else{
+			if(piece.getLocation().getX() == 0){
+				tempTarget.setTileColumn(((int)(piece.getLocation().getX())+2));
+				tempTarget.setTileRow(((int)(piece.getLocation().getY())-2));
+				targets.add(tempTarget);
+				tempTarget = new Tile();
+				tempTarget.setTileColumn(((int)(piece.getLocation().getX())+2));
+				tempTarget.setTileRow(((int)(piece.getLocation().getY())+2));
+				targets.add(tempTarget);
+			}else if(piece.getLocation().getX() == 7){
+				tempTarget.setTileColumn(((int)(piece.getLocation().getX())-2));
+				tempTarget.setTileRow(((int)(piece.getLocation().getY())-2));
+				targets.add(tempTarget);
+				tempTarget = new Tile();
+				tempTarget.setTileColumn(((int)(piece.getLocation().getX())-2));
+				tempTarget.setTileRow(((int)(piece.getLocation().getY())+2));
+				targets.add(tempTarget);
+			}else{
+				tempTarget.setTileColumn(((int)(piece.getLocation().getX())-2));
+				tempTarget.setTileRow(((int)(piece.getLocation().getY())-2));
+				targets.add(tempTarget);
+				tempTarget = new Tile();
+				tempTarget.setTileColumn(((int)(piece.getLocation().getX())+2));
+				tempTarget.setTileRow(((int)(piece.getLocation().getY())-2));
+				targets.add(tempTarget);
+				tempTarget = new Tile();
+				tempTarget.setTileColumn(((int)(piece.getLocation().getX())+2));
+				tempTarget.setTileRow(((int)(piece.getLocation().getY())+2));
+				targets.add(tempTarget);
+				tempTarget = new Tile();
+				tempTarget.setTileColumn(((int)(piece.getLocation().getX())-2));
+				tempTarget.setTileRow(((int)(piece.getLocation().getY())+2));
+				targets.add(tempTarget);
+			}
+		}
+		for(Tile target: getTargets()){
+			for(Tile tiles: getTiles()){
+				if(target.getTileColumn() == tiles.getTileColumn() && target.getTileRow() == tiles.getTileRow()){
+					target.setHasPiece(tiles.HasPiece());
+				}
+			}
+		}
+		ArrayList<Tile> remove = new ArrayList<Tile>(targets);
+			int index = 0;
+			for(Tile t: remove){
+			if(t.HasPiece()	){
+					targets.remove(index);
+					index--;
+			}
+			index++;
+		}
+	}
+		
+public void checkLocation(int row, int column) {
 			boolean validTarget = false;
 			for(Tile c : this.getTargets()) {
 				for(Tile t: getTiles()){
@@ -220,6 +315,9 @@ public class Board extends JPanel {
 			if(validTarget) {
 				Point target;
 				target = new Point(column, row);
+				if((row == 0 && selectedPiece.getColor() == Color.white) || (row == 7 && selectedPiece.getColor() == Color.red)){
+					selectedPiece.setKing(true);
+				}
 				selectedPiece.setLocation(target);
 				resetTargets();
 				selectedPiece = null;
@@ -233,39 +331,37 @@ public class Board extends JPanel {
 		}
 	}
 	//mouse listener
-	private class BoardListener implements MouseListener {
+		private class BoardListener implements MouseListener {
 
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			Point location = e.getPoint();
-			int width = getWidth() / NUMCOLUMNS;
-			int height = getHeight() / NUMROWS;
-			int row = (int) (location.getY() / height);
-			int column = (int) (location.getX() / width);
-			if (selectedPiece == null) {
-				for (Tile tiles : getTiles()) {
-					if (row == tiles.getTileRow()
-							&& column == tiles.getTileColumn()
-							&& tiles.HasPiece() == true) {
-						for (Piece p : getPieces()) {
-							if (p.getLocation().getY() == row
-									&& p.getLocation().getX() == column) {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Point location = e.getPoint();
+				int width = getWidth()/NUMCOLUMNS;
+				int height = getHeight()/NUMROWS;
+				int row = (int) (location.getY()/height);
+				int column = (int) (location.getX()/width);
+				if(selectedPiece == null){
+				for(Tile tiles: getTiles()){	
+					if(row == tiles.getTileRow() && column == tiles.getTileColumn() && tiles.HasPiece() == true){
+						for(Piece p: getPieces()){
+							if(p.getLocation().getY() == row && p.getLocation().getX() == column){
 								selectedPiece = p;
-								calcTargets(selectedPiece,
-										selectedPiece.isKing());
-								if (targets.size() != 0) {
+								calcTargets(selectedPiece, selectedPiece.isKing());
+								//if(targets.size() == 0){	
+								//canJump(selectedPiece, selectedPiece.isKing());
+								//}
+								if(targets.size()!= 0){
 									tiles.setHasPiece(false);
 								}
 							}
 						}
 					}
 				}
-			} else {
-				checkLocation(row, column);
-				//
+				}else{
+					checkLocation(row,column);
+					}
+				repaint();			
 			}
-			repaint();
-		}
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
 			}
@@ -303,7 +399,6 @@ public class Board extends JPanel {
             g.drawRect(leftCoord, topCoord, width, height);
         }
 		}
-	
 	public void resetTargets(){
 		targets.removeAll(targets);
 	}

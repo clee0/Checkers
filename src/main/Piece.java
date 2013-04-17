@@ -59,6 +59,9 @@ public class Piece {
          g.setColor(Color.black);
          g.drawOval(centerX, centerY, width, height);
          g.drawOval(centerX, centerY, width-5, height-5);
+         if(this.isKing()){
+        	 g.drawString("K", centerX+20, centerY+25);
+         }
          g.setColor(Color.orange);
          //g.drawString(String.valueOf(this.index), centerX+20, centerY+25);
 	}
