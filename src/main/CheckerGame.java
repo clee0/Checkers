@@ -11,13 +11,13 @@ public class CheckerGame extends JFrame{
 	private Board board;
 	private Player currentPlayer;
 	private boolean gameOver;
+	
 	public CheckerGame(){
 		board = new Board();
 		setSize(new Dimension(400,400));
 		this.add(board, BorderLayout.CENTER);
-		
-		
 	}
+	
 	public void setup(){
 		
 	}
@@ -25,6 +25,7 @@ public class CheckerGame extends JFrame{
 	public void turn(){
 		
 	}
+	
 	public void nextPlayer(){
 		
 	}
@@ -32,6 +33,7 @@ public class CheckerGame extends JFrame{
 	public void splash(){
 		
 	}
+	
 	public static void main(String[] args) {
 		CheckerGame newThing = new CheckerGame();
 		newThing.setVisible(true);

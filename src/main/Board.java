@@ -87,7 +87,7 @@ public class Board extends JPanel {
 
 		/***********************************************************************
 		 * PiecesCreation - creates the array list of
-		 * Tiles to use for the board *
+		 * Pieces to use for the board *
 		 ************************************************************************/
 		Piece tempPiece;
 		int index = 1;
@@ -107,7 +107,9 @@ public class Board extends JPanel {
 			}
 		}
 	}
+	
 	Tile tempTarget;
+	
 	public void calcTargets(Piece piece, boolean king){
 		targets = new ArrayList<Tile>();
 		tempTarget = new Tile();
@@ -258,14 +260,15 @@ public class Board extends JPanel {
 		}
 	
 
-	private ArrayList<Tile> getTiles() {
+	public ArrayList<Tile> getTiles() {
 		return this.tiles;
 	}
-	private ArrayList<Piece> getPieces() {
+	
+	public ArrayList<Piece> getPieces() {
 		return this.pieces;
 	}
 
-	private ArrayList<Tile> getTargets(){
+	public ArrayList<Tile> getTargets(){
 		return targets;
 	}
 }

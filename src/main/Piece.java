@@ -12,6 +12,10 @@ public class Piece {
 	private boolean king;
 	private int index;
 	
+	public Piece(int row, int column, Color color) {
+		this.location = new Point(row, column);
+		this.color = color;
+	}
 	
 	public Piece(){
 		location = null;

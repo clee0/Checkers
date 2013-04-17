@@ -13,6 +13,12 @@ private boolean endTile;
 public Tile(){
 	
 }
+
+public Tile(int row, int column) {
+	tileRow = row;
+	tileCol = column;
+}
+
 public void draw(Graphics g, Board board, int width, int height){
 	int leftCoord = this.getTileColumn()*width;
 	int topCoord = this.getTileRow()*height;
@@ -67,6 +73,14 @@ public boolean isEndTile() {
 
 public void setEndTile(boolean endTile) {
 	this.endTile = endTile;
+}
+
+@Override
+public boolean equals(Object o) {
+	Tile t = (Tile) o;
+	if ( t.tileCol == tileCol && t.tileRow == tileRow )
+		return true;
+	return false;
 }
 
 }
