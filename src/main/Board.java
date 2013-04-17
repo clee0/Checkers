@@ -107,9 +107,9 @@ public class Board extends JPanel {
 			}
 		}
 	}
-	
+
 	Tile tempTarget;
-	
+
 	public void calcTargets(Piece piece, boolean king){
 		targets = new ArrayList<Tile>();
 		tempTarget = new Tile();
@@ -188,54 +188,54 @@ public class Board extends JPanel {
 			}
 		}
 	}
-	
-	public void checkLocation(Point location) {
-			int width = this.getWidth()/NUMCOLUMNS;
-			int height = this.getHeight()/NUMROWS;
-			int row = (int) (location.getY()/height);
-			int column = (int) (location.getX()/width);
 
-			boolean validTarget = false;
-			for(Tile c : this.getTargets()) {
-				if(row == c.getTileRow() && column == c.getTileColumn()) {
-					validTarget = true;
-				}
+	public void checkLocation(Point location) {
+		int width = this.getWidth()/NUMCOLUMNS;
+		int height = this.getHeight()/NUMROWS;
+		int row = (int) (location.getY()/height);
+		int column = (int) (location.getX()/width);
+
+		boolean validTarget = false;
+		for(Tile c : this.getTargets()) {
+			if(row == c.getTileRow() && column == c.getTileColumn()) {
+				validTarget = true;
 			}
-			if(validTarget) {
-				Point target;
-				target = new Point(column, row);
-				//selectedPiece.setLocation(target);
-				repaint();
-			}
-			else{
-				//JOptionPane.showMessageDialog(null,"That is not a valid target.", "That is not a valid target.", JOptionPane.ERROR_MESSAGE);
+		}
+		if(validTarget) {
+			Point target;
+			target = new Point(column, row);
+			//selectedPiece.setLocation(target);
+			repaint();
+		}
+		else{
+			//JOptionPane.showMessageDialog(null,"That is not a valid target.", "That is not a valid target.", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	//mouse listener
-		private class BoardListener implements MouseListener {
+	private class BoardListener implements MouseListener {
 
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				Point location = e.getPoint();
-				repaint();
-				//calcTargets(selectedPiece);
-				//checkLocation(location);
-			}
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-			}
-			@Override
-			public void mouseExited(MouseEvent arg0) {
-			}
-
-			@Override
-			public void mousePressed(MouseEvent arg0) {
-			}
-			@Override
-			public void mouseReleased(MouseEvent arg0) {		
-			}
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			Point location = e.getPoint();
+			repaint();
+			//calcTargets(selectedPiece);
+			//checkLocation(location);
 		}
-	
+		@Override
+		public void mouseEntered(MouseEvent arg0) {
+		}
+		@Override
+		public void mouseExited(MouseEvent arg0) {
+		}
+
+		@Override
+		public void mousePressed(MouseEvent arg0) {
+		}
+		@Override
+		public void mouseReleased(MouseEvent arg0) {		
+		}
+	}
+
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		int width = this.getWidth() / NUMCOLUMNS;
@@ -246,24 +246,23 @@ public class Board extends JPanel {
 		for (Piece pieces : this.getPieces()) {
 			pieces.draw(g, this, width, height);
 			//if(pieces == selectedPiece){
-				//pieces.drawHighlight(g, this, width, height);
+			//pieces.drawHighlight(g, this, width, height);
 			//}
 		}
 		for (Tile c : this.getTargets()) {
-            int leftCoord = c.getTileColumn() * width;
-            int topCoord = c.getTileRow() * height;
-            g.setColor(Color.cyan);
-            g.fillRect(leftCoord, topCoord, width, height);
-            g.setColor(Color.black);
-            g.drawRect(leftCoord, topCoord, width, height);
-        }
+			int leftCoord = c.getTileColumn() * width;
+			int topCoord = c.getTileRow() * height;
+			g.setColor(Color.cyan);
+			g.fillRect(leftCoord, topCoord, width, height);
+			g.setColor(Color.black);
+			g.drawRect(leftCoord, topCoord, width, height);
 		}
-	
+	}
 
 	public ArrayList<Tile> getTiles() {
 		return this.tiles;
 	}
-	
+
 	public ArrayList<Piece> getPieces() {
 		return this.pieces;
 	}
