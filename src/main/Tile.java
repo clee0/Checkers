@@ -7,7 +7,7 @@ public class Tile {
 private int tileRow,tileCol;
 public Color color;
 private int index;
-private Piece piece;
+private boolean hasPiece;
 private boolean endTile;
 
 public Tile(){
@@ -28,8 +28,8 @@ public void draw(Graphics g, Board board, int width, int height){
 	g.drawRect(leftCoord, topCoord, width, height);
 	
 	//shows index of cell 
-	g.setColor(Color.green);
-	g.drawString(String.valueOf(this.getIndex()), leftCoord +20, topCoord +25);
+	//g.setColor(Color.green);
+	//g.drawString(String.valueOf(this.getIndex()), leftCoord +20, topCoord +25);
 	
 	//show if King row
 	//g.drawString(String.valueOf(this.isEndTile()), leftCoord +15, topCoord + 15);
@@ -83,4 +83,10 @@ public boolean equals(Object o) {
 	return false;
 }
 
+public void setHasPiece(boolean b) {
+	this.hasPiece = b;
+}
+public boolean HasPiece(){
+	return this.hasPiece;
+}
 }

@@ -60,7 +60,7 @@ public class Piece {
          g.drawOval(centerX, centerY, width, height);
          g.drawOval(centerX, centerY, width-5, height-5);
          g.setColor(Color.orange);
-         g.drawString(String.valueOf(this.index), centerX+20, centerY+25);
+         //g.drawString(String.valueOf(this.index), centerX+20, centerY+25);
 	}
 	
 	public void drawHighlight(Graphics g, Board board, int width, int height){

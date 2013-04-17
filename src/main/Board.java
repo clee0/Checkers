@@ -10,6 +10,7 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 
@@ -30,8 +31,9 @@ public class Board extends JPanel {
 	public Board() {
 		board = new JPanel();
 		tiles = new ArrayList<Tile>();
-		pieces = new ArrayList<Piece>();
+		pieces = new ArrayList<Piece>();	
 		targets = new ArrayList<Tile>();
+		selectedPiece = null;
 		setSize(new Dimension(800, 800));
 		Graphics g = null;
 		loadBoard();
@@ -98,6 +100,7 @@ public class Board extends JPanel {
 				index++;
 				tempPiece.setLocation(new Point((int) ((tiles.get(i).getTileColumn())), (int) (tiles.get(i).getTileRow())));
 				tempPiece.setKing(false);
+				tiles.get(i).setHasPiece(true);
 				if (tempPiece.getLocation().getY() < 3) {
 					tempPiece.setColor(Color.red);
 				} else {
@@ -107,9 +110,9 @@ public class Board extends JPanel {
 			}
 		}
 	}
-
+	
 	Tile tempTarget;
-
+	
 	public void calcTargets(Piece piece, boolean king){
 		targets = new ArrayList<Tile>();
 		tempTarget = new Tile();
@@ -134,7 +137,6 @@ public class Board extends JPanel {
 				}
 			}else{
 				if(piece.getLocation().getX() == 0){
-					System.out.println((int)(piece.getLocation().getX()) + " this is the X " + (int)(piece.getLocation().getY()) + " this is the Y");
 					tempTarget.setTileColumn(((int)(piece.getLocation().getX())+1));
 					tempTarget.setTileRow(((int)(piece.getLocation().getY())+1));
 					targets.add(tempTarget);
@@ -187,28 +189,47 @@ public class Board extends JPanel {
 				targets.add(tempTarget);
 			}
 		}
-	}
-
-	public void checkLocation(Point location) {
-		int width = this.getWidth()/NUMCOLUMNS;
-		int height = this.getHeight()/NUMROWS;
-		int row = (int) (location.getY()/height);
-		int column = (int) (location.getX()/width);
-
-		boolean validTarget = false;
-		for(Tile c : this.getTargets()) {
-			if(row == c.getTileRow() && column == c.getTileColumn()) {
-				validTarget = true;
+		for(Tile target: getTargets()){
+			for(Tile tiles: getTiles()){
+				if(target.getTileColumn() == tiles.getTileColumn() && target.getTileRow() == tiles.getTileRow()){
+					target.setHasPiece(tiles.HasPiece());
+				}
 			}
 		}
-		if(validTarget) {
-			Point target;
-			target = new Point(column, row);
-			//selectedPiece.setLocation(target);
-			repaint();
+		ArrayList<Tile> remove = new ArrayList<Tile>(targets);
+			int index = 0;
+			for(Tile t: remove){
+			if(t.HasPiece()){
+					targets.remove(index);
+					index--;
+			}
+			index++;
 		}
-		else{
-			//JOptionPane.showMessageDialog(null,"That is not a valid target.", "That is not a valid target.", JOptionPane.ERROR_MESSAGE);
+	}
+	
+	public void checkLocation(int row, int column) {
+			boolean validTarget = false;
+			for(Tile c : this.getTargets()) {
+				for(Tile t: getTiles()){
+				if(row == c.getTileRow() && column == c.getTileColumn() && t.getTileRow() == c.getTileRow() && t.getTileColumn() == c.getTileColumn()) {
+					validTarget = true;
+					t.setHasPiece(true);
+				}
+			}
+			}
+			if(validTarget) {
+				Point target;
+				target = new Point(column, row);
+				selectedPiece.setLocation(target);
+				resetTargets();
+				selectedPiece = null;
+				repaint();
+			}
+			else if(targets.size() == 0){
+				JOptionPane.showMessageDialog(null,"There are no valid targets. Please select a new piece", "ERROR", JOptionPane.ERROR_MESSAGE);
+				selectedPiece = null;
+			}else{
+				JOptionPane.showMessageDialog(null,"That is not a valid target.", "That is not a valid target.", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	//mouse listener
@@ -217,25 +238,49 @@ public class Board extends JPanel {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			Point location = e.getPoint();
+			int width = getWidth() / NUMCOLUMNS;
+			int height = getHeight() / NUMROWS;
+			int row = (int) (location.getY() / height);
+			int column = (int) (location.getX() / width);
+			if (selectedPiece == null) {
+				for (Tile tiles : getTiles()) {
+					if (row == tiles.getTileRow()
+							&& column == tiles.getTileColumn()
+							&& tiles.HasPiece() == true) {
+						for (Piece p : getPieces()) {
+							if (p.getLocation().getY() == row
+									&& p.getLocation().getX() == column) {
+								selectedPiece = p;
+								calcTargets(selectedPiece,
+										selectedPiece.isKing());
+								if (targets.size() != 0) {
+									tiles.setHasPiece(false);
+								}
+							}
+						}
+					}
+				}
+			} else {
+				checkLocation(row, column);
+				//
+			}
 			repaint();
-			//calcTargets(selectedPiece);
-			//checkLocation(location);
 		}
-		@Override
-		public void mouseEntered(MouseEvent arg0) {
-		}
-		@Override
-		public void mouseExited(MouseEvent arg0) {
-		}
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+			}
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+			}
 
-		@Override
-		public void mousePressed(MouseEvent arg0) {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+			}
+			@Override
+			public void mouseReleased(MouseEvent arg0) {		
+			}
 		}
-		@Override
-		public void mouseReleased(MouseEvent arg0) {		
-		}
-	}
-
+	
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		int width = this.getWidth() / NUMCOLUMNS;
@@ -245,24 +290,28 @@ public class Board extends JPanel {
 		}
 		for (Piece pieces : this.getPieces()) {
 			pieces.draw(g, this, width, height);
-			//if(pieces == selectedPiece){
-			//pieces.drawHighlight(g, this, width, height);
-			//}
+			if(pieces == selectedPiece){
+				pieces.drawHighlight(g, this, width, height);
+			}
 		}
 		for (Tile c : this.getTargets()) {
-			int leftCoord = c.getTileColumn() * width;
-			int topCoord = c.getTileRow() * height;
-			g.setColor(Color.cyan);
-			g.fillRect(leftCoord, topCoord, width, height);
-			g.setColor(Color.black);
-			g.drawRect(leftCoord, topCoord, width, height);
+            int leftCoord = c.getTileColumn() * width;
+            int topCoord = c.getTileRow() * height;
+            g.setColor(Color.cyan);
+            g.fillRect(leftCoord, topCoord, width, height);
+            g.setColor(Color.black);
+            g.drawRect(leftCoord, topCoord, width, height);
+        }
 		}
+	
+	public void resetTargets(){
+		targets.removeAll(targets);
 	}
-
+	
 	public ArrayList<Tile> getTiles() {
 		return this.tiles;
 	}
-
+	
 	public ArrayList<Piece> getPieces() {
 		return this.pieces;
 	}
