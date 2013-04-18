@@ -108,9 +108,9 @@ public class Board extends JPanel {
 			}
 		}
 	}
-	
+
 	Tile tempTarget;
-	
+
 	public void calcTargets(Piece piece, boolean king){
 		targets = new ArrayList<Tile>();
 		tempTarget = new Tile();
@@ -220,20 +220,20 @@ public class Board extends JPanel {
 			}
 		}
 		ArrayList<Tile> remove = new ArrayList<Tile>(targets);
-			int index = 0;
-			for(Tile t: remove){
+		int index = 0;
+		for(Tile t: remove){
 			if(t.HasPiece()){
-					targets.remove(index);
-					index--;
+				targets.remove(index);
+				index--;
 			}
 			index++;
 		}
 	}
-	
+
 	public void canJump(Piece piece, boolean king){
 		targets = new ArrayList<Tile>();
 		tempTarget = new Tile();
-		
+
 		if(king == false){
 			if(piece.getColor() == Color.white){
 				if(piece.getLocation().getX() == 0){
@@ -315,55 +315,55 @@ public class Board extends JPanel {
 			}
 		}
 		ArrayList<Tile> remove = new ArrayList<Tile>(targets);
-			int index = 0;
-			for(Tile t: remove){
+		int index = 0;
+		for(Tile t: remove){
 			if(t.HasPiece()	){
-					targets.remove(index);
-					index--;
+				targets.remove(index);
+				index--;
 			}
 			index++;
 		}
 	}
-		
-public void checkLocation(int row, int column) {
-			boolean validTarget = false;
-			for(Tile c : this.getTargets()) {
-				for(Tile t: getTiles()){
+
+	public void checkLocation(int row, int column) {
+		boolean validTarget = false;
+		for(Tile c : this.getTargets()) {
+			for(Tile t: getTiles()){
 				if(row == c.getTileRow() && column == c.getTileColumn() && t.getTileRow() == c.getTileRow() && t.getTileColumn() == c.getTileColumn()) {
 					validTarget = true;
 					t.setHasPiece(true);
 				}
 			}
+		}
+		if(validTarget) {
+			Point target;
+			target = new Point(column, row);
+			if((row == 0 && selectedPiece.getColor() == Color.white) || (row == 7 && selectedPiece.getColor() == Color.red)){
+				selectedPiece.setKing(true);
 			}
-			if(validTarget) {
-				Point target;
-				target = new Point(column, row);
-				if((row == 0 && selectedPiece.getColor() == Color.white) || (row == 7 && selectedPiece.getColor() == Color.red)){
-					selectedPiece.setKing(true);
-				}
-				selectedPiece.setLocation(target);
-				resetTargets();
-				selectedPiece = null;
-				repaint();
-			}
-			else if(targets.size() == 0){
-				JOptionPane.showMessageDialog(null,"There are no valid targets. Please select a new piece", "ERROR", JOptionPane.ERROR_MESSAGE);
-				selectedPiece = null;
-			}else{
-				JOptionPane.showMessageDialog(null,"That is not a valid target.", "That is not a valid target.", JOptionPane.ERROR_MESSAGE);
+			selectedPiece.setLocation(target);
+			resetTargets();
+			selectedPiece = null;
+			repaint();
+		}
+		else if(targets.size() == 0){
+			JOptionPane.showMessageDialog(null,"There are no valid targets. Please select a new piece", "ERROR", JOptionPane.ERROR_MESSAGE);
+			selectedPiece = null;
+		}else{
+			JOptionPane.showMessageDialog(null,"That is not a valid target.", "That is not a valid target.", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	//mouse listener
-		private class BoardListener implements MouseListener {
+	private class BoardListener implements MouseListener {
 
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				Point location = e.getPoint();
-				int width = getWidth()/NUMCOLUMNS;
-				int height = getHeight()/NUMROWS;
-				int row = (int) (location.getY()/height);
-				int column = (int) (location.getX()/width);
-				if(selectedPiece == null){
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			Point location = e.getPoint();
+			int width = getWidth()/NUMCOLUMNS;
+			int height = getHeight()/NUMROWS;
+			int row = (int) (location.getY()/height);
+			int column = (int) (location.getX()/width);
+			if(selectedPiece == null){
 				for(Tile tiles: getTiles()){	
 					if(row == tiles.getTileRow() && column == tiles.getTileColumn() && tiles.HasPiece() == true){
 						for(Piece p: getPieces()){
@@ -380,26 +380,26 @@ public void checkLocation(int row, int column) {
 						}
 					}
 				}
-				}else{
-					checkLocation(row,column);
-					}
-				repaint();			
+			}else{
+				checkLocation(row,column);
 			}
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-			}
-			@Override
-			public void mouseExited(MouseEvent arg0) {
-			}
-
-			@Override
-			public void mousePressed(MouseEvent arg0) {
-			}
-			@Override
-			public void mouseReleased(MouseEvent arg0) {		
-			}
+			repaint();			
 		}
-	
+		@Override
+		public void mouseEntered(MouseEvent arg0) {
+		}
+		@Override
+		public void mouseExited(MouseEvent arg0) {
+		}
+
+		@Override
+		public void mousePressed(MouseEvent arg0) {
+		}
+		@Override
+		public void mouseReleased(MouseEvent arg0) {		
+		}
+	}
+
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		int width = this.getWidth() / NUMCOLUMNS;
@@ -414,14 +414,30 @@ public void checkLocation(int row, int column) {
 			}
 		}
 		for (Tile c : this.getTargets()) {
-            int leftCoord = c.getTileColumn() * width;
-            int topCoord = c.getTileRow() * height;
-            g.setColor(Color.cyan);
-            g.fillRect(leftCoord, topCoord, width, height);
-            g.setColor(Color.black);
-            g.drawRect(leftCoord, topCoord, width, height);
-        }
+			int leftCoord = c.getTileColumn() * width;
+			int topCoord = c.getTileRow() * height;
+			g.setColor(Color.cyan);
+			g.fillRect(leftCoord, topCoord, width, height);
+			g.setColor(Color.black);
+			g.drawRect(leftCoord, topCoord, width, height);
 		}
+	}
+	
+	
+	// This will remove a piece from the board.
+	public void remove(Piece remove) {
+		//pieces.remove(remove);
+	}
+	
+	// Returns the tile at given row and column.
+	public Tile getTileAt(int row, int col) {
+		for (Tile t : tiles) {
+			if (t.getTileRow() == row && t.getTileColumn() == col)
+				return t;
+		}
+		return null;
+	}
+	
 	public void resetTargets(){
 		targets.removeAll(targets);
 	}
@@ -434,7 +450,7 @@ public void checkLocation(int row, int column) {
 	public ArrayList<Tile> getTiles() {
 		return this.tiles;
 	}
-	
+
 	public ArrayList<Piece> getPieces() {
 		return this.pieces;
 	}

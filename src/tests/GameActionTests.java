@@ -218,5 +218,47 @@ public class GameActionTests {
 		assertTrue(targets.contains(new Tile(6,3)));
 		assertTrue(targets.contains(new Tile(1,3)));
 	}
+	
+	@Test
+	public void testRemove() {
+		// Add pieces to the board.
+		Piece remove1 = new Piece(0, 0, Color.BLACK);
+		Piece remove2 = new Piece(0, 2, Color.BLACK);
+		Piece remove3 = new Piece(0, 4, Color.BLACK);
+		Piece remove4 = new Piece(0, 6, Color.BLACK);
+		Piece remove5 = new Piece(1, 0, Color.RED);
+		Piece remove6 = new Piece(1, 2, Color.RED);
+		Piece remove7 = new Piece(1, 4, Color.RED);
+		Piece remove8 = new Piece(1, 6, Color.RED);
+	
+		board.getPieces().add(remove1);
+		board.getPieces().add(remove2);
+		board.getPieces().add(remove3);
+		board.getPieces().add(remove4);
+		board.getPieces().add(remove5);
+		board.getPieces().add(remove6);
+		board.getPieces().add(remove7);
+		board.getPieces().add(remove8);
+		
+		// Remove the pieces added.
+		board.remove(remove1);
+		board.remove(remove2);
+		board.remove(remove3);
+		board.remove(remove4);
+		board.remove(remove5);
+		board.remove(remove6);
+		board.remove(remove7);
+		board.remove(remove8);
+		
+		// Check if the tiles have a piece on them.
+		assertFalse(board.getTileAt(0, 0).HasPiece());
+		assertFalse(board.getTileAt(0, 2).HasPiece());
+		assertFalse(board.getTileAt(0, 4).HasPiece());
+		assertFalse(board.getTileAt(0, 6).HasPiece());
+		assertFalse(board.getTileAt(1, 0).HasPiece());
+		assertFalse(board.getTileAt(1, 2).HasPiece());
+		assertFalse(board.getTileAt(1, 4).HasPiece());
+		assertFalse(board.getTileAt(1, 6).HasPiece());	
+	}
 
 }

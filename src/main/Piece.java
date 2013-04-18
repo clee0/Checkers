@@ -11,6 +11,7 @@ public class Piece {
 	private Color color;
 	private boolean king;
 	private int index;
+	private boolean jumped;
 	
 	public Piece(int row, int column, Color color) {
 		this.location = new Point(row, column);
@@ -22,6 +23,7 @@ public class Piece {
 		color = null;
 		king = false;
 		index = 0;
+		jumped = false;
 	}
 	
 	public Point getLocation() {
@@ -48,6 +50,14 @@ public class Piece {
 	}
 	public void setIndex(int index) {
 		this.index = index;
+	}
+
+	public boolean isJumped() {
+		return jumped;
+	}
+
+	public void setJumped(boolean jumped) {
+		this.jumped = jumped;
 	}
 
 	public void draw(Graphics g, Board board, int width, int height) {
