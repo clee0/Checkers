@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 import main.*;
 
 public class CheckerGame extends JFrame{
-	public enum Player {RED, BLACK}
+	public enum Player {RED, WHITE}
 	private Board board;
 	private Player currentPlayer;
 	private boolean gameOver;

@@ -39,15 +39,15 @@ public class GameActionTests {
 		assertEquals(0, targets.size());
 
 		//Testing one that can move to one place
-		Piece piece13 = pieces.get(13);
-		board.calcTargets(piece13, piece13.isKing());
+		Piece piece12 = pieces.get(12);
+		board.calcTargets(piece12, piece12.isKing());
 		targets = board.getTargets();
 		assertEquals(1, targets.size());
 		assertTrue( targets.contains(new Tile(4, 1)) );
 
 		//Testing one that can move to two places
-		Piece piece10 = pieces.get(10);
-		board.calcTargets(piece10, piece10.isKing());
+		Piece piece9 = pieces.get(9);
+		board.calcTargets(piece9, piece9.isKing());
 		targets = board.getTargets();
 		assertEquals(2, targets.size());
 		assertTrue( targets.contains(new Tile(3, 2)) );
@@ -95,7 +95,7 @@ public class GameActionTests {
 	public void testBasicKingTargetSelection() {
 
 		// Clear the board
-		board.getPieces().clear();
+		board.clearPieces();
 
 		// Add a king
 		Piece king = new Piece(0,3,Color.red);
@@ -104,20 +104,20 @@ public class GameActionTests {
 		// Test movement on player's edge
 		board.calcTargets(king,king.isKing());
 		targets = board.getTargets();
-		assertEquals(2,targets.size());
-		assertTrue(targets.contains(new Tile(1,2)));
-		assertTrue(targets.contains(new Tile(1,4)));
+			assertEquals(2,targets.size());
+		assertTrue(targets.contains(new Tile(2,1)));
+		assertTrue(targets.contains(new Tile(4,1)));
 
 		// Test movement on opponent's edge
-		king.setLocation(new Point(7,2));
+		king.setLocation(new Point(2,7));
 		board.calcTargets(king,king.isKing());
 		targets = board.getTargets();
 		assertEquals(2,targets.size());
 		assertTrue(targets.contains(new Tile(6,1)));
 		assertTrue(targets.contains(new Tile(6,3)));
-
+		
 		// Test movement on left side
-		king.setLocation(new Point(3,0));
+		king.setLocation(new Point(0,3));
 		board.calcTargets(king,king.isKing());
 		targets = board.getTargets();
 		assertEquals(2,targets.size());
@@ -125,26 +125,27 @@ public class GameActionTests {
 		assertTrue(targets.contains(new Tile(4,1)));
 
 		// Test movement on right side
-		king.setLocation(new Point(4,7));
+		king.setLocation(new Point(7,4));
 		board.calcTargets(king,king.isKing());
 		targets = board.getTargets();
 		assertEquals(2,targets.size());
 		assertTrue(targets.contains(new Tile(3,6)));
 		assertTrue(targets.contains(new Tile(5,6)));
 
-		// Test movement in bottom-left corner
+		// Test movement in upper-right corner
 		king.setLocation(new Point(7,0));
 		board.calcTargets(king,king.isKing());
 		targets = board.getTargets();
+		System.out.println(targets.get(0).getTileRow());
 		assertEquals(1,targets.size());
-		assertTrue(targets.contains(new Tile(6,1)));
+		assertTrue(targets.contains(new Tile(1,6)));
 
-		// Test movement in upper-right corner
+		// Test movement in bottom-left corner
 		king.setLocation(new Point(0,7));
 		board.calcTargets(king,king.isKing());
 		targets = board.getTargets();
 		assertEquals(1,targets.size());
-		assertTrue(targets.contains(new Tile(1,6)));
+		assertTrue(targets.contains(new Tile(6,1)));
 	}
 
 	@Test
