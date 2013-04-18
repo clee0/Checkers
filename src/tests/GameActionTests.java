@@ -52,7 +52,25 @@ public class GameActionTests {
 		assertEquals(2, targets.size());
 		assertTrue( targets.contains(new Tile(3, 2)) );
 		assertTrue( targets.contains(new Tile(3, 4)) );
-
+		
+		//Test the bottom-left corner movement 
+		board.clearPieces();
+		Piece cornerPiece = new Piece(0,7, Color.white);
+		cornerPiece.setKing(false);
+		board.calcTargets(cornerPiece,cornerPiece.isKing());
+		targets = board.getTargets();
+		assertEquals(1,targets.size());
+		assertTrue(targets.contains(new Tile(6,1)));
+		
+		//test the top right corner movement
+		cornerPiece.setLocation(new Point(7,0));
+		cornerPiece.setColor(Color.red);
+		board.calcTargets(cornerPiece,cornerPiece.isKing());
+		targets = board.getTargets();
+		System.out.println(targets.get(0).getTileRow());
+		assertEquals(1,targets.size());
+		assertTrue(targets.contains(new Tile(1,6)));
+	
 	}
 
 	@Test
