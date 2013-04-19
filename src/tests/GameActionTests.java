@@ -260,5 +260,76 @@ public class GameActionTests {
 		assertFalse(board.getTileAt(1, 4).HasPiece());
 		assertFalse(board.getTileAt(1, 6).HasPiece());	
 	}
+	
+	// Test checkLocation function
+	@Test
+	public void testMove() {
+		
+		
+		// Clear board
+		board.clearPieces();
+		
+		// Add a test piece
+		Piece piece = new Piece(5,2,Color.BLACK);
+		board.getPieces().add(piece);
+		
+		// Test move function
+		assertTrue(board.getTileAt(5,2).HasPiece());
+		board.setSelectedPiece(piece);
+		board.checkLocation(4, 1);
+		assertTrue(board.getTileAt(4,1).HasPiece());
+		assertFalse(board.getTileAt(5,2).HasPiece());
+		
+		// Ensure move function does not move to invalid targets
+		board.checkLocation(5,2);
+		assertTrue(board.getTileAt(4,1).HasPiece());
+		assertFalse(board.getTileAt(5,2).HasPiece());
+		
+		// Test kinging (all 8 possible kinging tiles)
+		board.clearPieces();
+		
+		Piece black1 = new Piece(1,0,Color.BLACK);
+		Piece black2 = new Piece(1,2,Color.BLACK);
+		Piece black3 = new Piece(1,4,Color.BLACK);
+		Piece black4 = new Piece(1,6,Color.BLACK);
+		Piece red1 = new Piece(6,1,Color.RED);
+		Piece red2 = new Piece(6,3,Color.RED);
+		Piece red3 = new Piece(6,5,Color.RED);
+		Piece red4 = new Piece(6,7,Color.RED);
+		board.getPieces().add(black1);
+		board.getPieces().add(black2);
+		board.getPieces().add(black3);
+		board.getPieces().add(black4);
+		board.getPieces().add(red1);
+		board.getPieces().add(red2);
+		board.getPieces().add(red3);
+		board.getPieces().add(red4);
+		
+		board.setSelectedPiece(black1);
+		board.checkLocation(0,1);
+		board.setSelectedPiece(black2);
+		board.checkLocation(0,3);
+		board.setSelectedPiece(black3);
+		board.checkLocation(0,5);
+		board.setSelectedPiece(black4);
+		board.checkLocation(0,7);
+		board.setSelectedPiece(red1);
+		board.checkLocation(7,0);
+		board.setSelectedPiece(red2);
+		board.checkLocation(7,2);
+		board.setSelectedPiece(red3);
+		board.checkLocation(7,4);
+		board.setSelectedPiece(red4);
+		board.checkLocation(7,6);
+		
+		assertTrue(black1.isKing());
+		assertTrue(black2.isKing());
+		assertTrue(black3.isKing());
+		assertTrue(black4.isKing());
+		assertTrue(red1.isKing());
+		assertTrue(red2.isKing());
+		assertTrue(red3.isKing());
+		assertTrue(red4.isKing());
+	}
 
 }

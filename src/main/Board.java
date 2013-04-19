@@ -482,4 +482,12 @@ public class Board extends JPanel {
 	public ArrayList<Tile> getTargets(){
 		return targets;
 	}
+
+	public Piece getSelectedPiece() {
+		return selectedPiece;
+	}
+
+	public void setSelectedPiece(Piece selectedPiece) {
+		this.selectedPiece = selectedPiece;
+	}
 }
