@@ -45,12 +45,12 @@ public class GameActionTests {
 		assertEquals(1, targets.size());
 		assertTrue( targets.contains(new Tile(4, 1)) );
 
-		//Testing one that can move to two places
+		///Testing one that can move to two places
 		Piece piece9 = pieces.get(9);
 		board.calcTargets(piece9, piece9.isKing());
 		targets = board.getTargets();
 		assertEquals(2, targets.size());
-		assertTrue( targets.contains(new Tile(3, 2)) );
+		assertFalse( targets.contains(new Tile(3, 2)) );
 		assertTrue( targets.contains(new Tile(3, 4)) );
 		
 		//Test the bottom-left corner movement 
@@ -119,11 +119,11 @@ public class GameActionTests {
 		Piece king = new Piece(0,3,Color.red);
 		king.setKing(true);
 
-		// Test movement on player's edge
+		/// Test movement on player's edge
 		board.calcTargets(king,king.isKing());
 		targets = board.getTargets();
 			assertEquals(2,targets.size());
-		assertTrue(targets.contains(new Tile(2,1)));
+		assertFalse(targets.contains(new Tile(2,1)));
 		assertTrue(targets.contains(new Tile(4,1)));
 
 		// Test movement on opponent's edge
