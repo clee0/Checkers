@@ -332,4 +332,25 @@ public class GameActionTests {
 		assertTrue(red4.isKing());
 	}
 
+	@Test
+	public void testJump() {
+		
+		// Clear board
+		board.clearPieces();
+		
+		// Add two pieces
+		Piece jumper = new Piece(5,2,Color.BLACK);
+		Piece victim = new Piece(4,3,Color.RED);
+		board.getPieces().add(jumper);
+		board.getPieces().add(victim);
+		assertTrue(board.getTileAt(5,2).HasPiece());
+		assertTrue(board.getTileAt(4,3).HasPiece());
+		
+		// Jump, check piece is removed and tiles are updated
+		board.setSelectedPiece(jumper);
+		board.checkLocation(3,4);
+		assertTrue(board.getTileAt(3,4).HasPiece());
+		assertFalse(board.getTileAt(4,3).HasPiece());
+		assertFalse(board.getTileAt(5,2).HasPiece());
+	}
 }
