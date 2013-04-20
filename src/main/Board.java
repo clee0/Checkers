@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.ListIterator;
 import java.util.Map;
 
 import javax.swing.JFrame;
@@ -105,6 +106,7 @@ public class Board extends JPanel {
 					tempPiece.setColor(Color.white);
 				}
 				pieces.add(tempPiece);
+				tiles.get(i).setPiece(tempPiece);
 			}
 		}
 	}
@@ -113,89 +115,107 @@ public class Board extends JPanel {
 
 	public void calcTargets(Piece piece, boolean king){
 		targets = new ArrayList<Tile>();
-		tempTarget = new Tile();
+		//tempTarget = new Tile();
 
 		if(king == false){
 			if(piece.getColor() == Color.white){
 				if(piece.getLocation().getX() == 0){
-					tempTarget.setTileColumn(((int)(piece.getLocation().getX())+1));
+					/*tempTarget.setTileColumn(((int)(piece.getLocation().getX())+1));
 					tempTarget.setTileRow(((int)(piece.getLocation().getY())-1));
-					targets.add(tempTarget);
+					targets.add(tempTarget);*/
+					targets.add(getTileAt(piece.getLocation().y-1,piece.getLocation().x+1));
 				}else if(piece.getLocation().getX() == 7){
-					tempTarget.setTileColumn(((int)(piece.getLocation().getX())-1));
+					/*tempTarget.setTileColumn(((int)(piece.getLocation().getX())-1));
 					tempTarget.setTileRow(((int)(piece.getLocation().getY())-1));
-					targets.add(tempTarget);
+					targets.add(tempTarget);*/
+					targets.add(getTileAt(piece.getLocation().y-1,piece.getLocation().x-1));
 				}else{
-					tempTarget.setTileColumn(((int)(piece.getLocation().getX())-1));
+					/*tempTarget.setTileColumn(((int)(piece.getLocation().getX())-1));
 					tempTarget.setTileRow(((int)(piece.getLocation().getY())-1));
 					targets.add(tempTarget);
 					tempTarget = new Tile();
 					tempTarget.setTileColumn(((int)(piece.getLocation().getX())+1));
 					tempTarget.setTileRow(((int)(piece.getLocation().getY())-1));
-					targets.add(tempTarget);
+					targets.add(tempTarget);*/
+					targets.add(getTileAt(piece.getLocation().y-1,piece.getLocation().x-1));
+					targets.add(getTileAt(piece.getLocation().y-1,piece.getLocation().x+1));
 				}
 			}else{
 				if(piece.getLocation().getX() == 0){
-					tempTarget.setTileColumn(((int)(piece.getLocation().getX())+1));
+					/*tempTarget.setTileColumn(((int)(piece.getLocation().getX())+1));
 					tempTarget.setTileRow(((int)(piece.getLocation().getY())+1));
-					targets.add(tempTarget);
+					targets.add(tempTarget);*/
+					targets.add(getTileAt(piece.getLocation().y+1,piece.getLocation().x+1));
 				}else if(piece.getLocation().getX() == 7){
-					tempTarget.setTileColumn(((int)(piece.getLocation().getX())-1));
+					/*tempTarget.setTileColumn(((int)(piece.getLocation().getX())-1));
 					tempTarget.setTileRow(((int)(piece.getLocation().getY())+1));
-					targets.add(tempTarget);
+					targets.add(tempTarget);*/
+					targets.add(getTileAt(piece.getLocation().y+1,piece.getLocation().x-1));
 				}else{
-					tempTarget.setTileColumn(((int)(piece.getLocation().getX())-1));
+					/*tempTarget.setTileColumn(((int)(piece.getLocation().getX())-1));
 					tempTarget.setTileRow(((int)(piece.getLocation().getY())+1));
 					targets.add(tempTarget);
 					tempTarget = new Tile();
 					tempTarget.setTileColumn(((int)(piece.getLocation().getX())+1));
 					tempTarget.setTileRow(((int)(piece.getLocation().getY())+1));
-					targets.add(tempTarget);
+					targets.add(tempTarget);*/
+					targets.add(getTileAt(piece.getLocation().y+1,piece.getLocation().x-1));
+					targets.add(getTileAt(piece.getLocation().y+1,piece.getLocation().x+1));
 				}
 			}
 		}else{
 			if(piece.getLocation().getX() == 0 && piece.getLocation().getY() != 7){
-				tempTarget.setTileColumn(((int)(piece.getLocation().getX())+1));
+				/*tempTarget.setTileColumn(((int)(piece.getLocation().getX())+1));
 				tempTarget.setTileRow(((int)(piece.getLocation().getY())-1));
 				targets.add(tempTarget);
 				tempTarget = new Tile();
 				tempTarget.setTileColumn(((int)(piece.getLocation().getX())+1));
 				tempTarget.setTileRow(((int)(piece.getLocation().getY())+1));
-				targets.add(tempTarget);
+				targets.add(tempTarget);*/
+				targets.add(getTileAt(piece.getLocation().y-1,piece.getLocation().x+1));
+				targets.add(getTileAt(piece.getLocation().y+1,piece.getLocation().x+1));
 			}else if(piece.getLocation().getX() == 0 && piece.getLocation().getY() == 7){
-				tempTarget.setTileColumn(((int)(piece.getLocation().getX())+1));
+				/*tempTarget.setTileColumn(((int)(piece.getLocation().getX())+1));
 				tempTarget.setTileRow(((int)(piece.getLocation().getY())-1));
-				targets.add(tempTarget);
+				targets.add(tempTarget);*/
+				targets.add(getTileAt(piece.getLocation().y-1,piece.getLocation().x+1));
 			}else if(piece.getLocation().getX() == 7 && piece.getLocation().getY() != 0){
-				tempTarget.setTileColumn(((int)(piece.getLocation().getX())-1));
+				/*tempTarget.setTileColumn(((int)(piece.getLocation().getX())-1));
 				tempTarget.setTileRow(((int)(piece.getLocation().getY())-1));
 				targets.add(tempTarget);
 				tempTarget = new Tile();
 				tempTarget.setTileColumn(((int)(piece.getLocation().getX())-1));
 				tempTarget.setTileRow(((int)(piece.getLocation().getY())+1));
-				targets.add(tempTarget);
+				targets.add(tempTarget);*/
+				targets.add(getTileAt(piece.getLocation().y-1,piece.getLocation().x-1));
+				targets.add(getTileAt(piece.getLocation().y+1,piece.getLocation().x-1));
 			}else if(piece.getLocation().getX() == 7 && piece.getLocation().getY() == 0){
-				tempTarget.setTileColumn(((int)(piece.getLocation().getX())-1));
+				/*tempTarget.setTileColumn(((int)(piece.getLocation().getX())-1));
 				tempTarget.setTileRow(((int)(piece.getLocation().getY())+1));
-				targets.add(tempTarget);
+				targets.add(tempTarget);*/
+				targets.add(getTileAt(piece.getLocation().y+1,piece.getLocation().x-1));
 			}else if(piece.getLocation().getY() == 7){
-				tempTarget.setTileColumn(((int)(piece.getLocation().getX())-1));
+				/*tempTarget.setTileColumn(((int)(piece.getLocation().getX())-1));
 				tempTarget.setTileRow(((int)(piece.getLocation().getY())-1));
 				targets.add(tempTarget);
 				tempTarget = new Tile();
 				tempTarget.setTileColumn(((int)(piece.getLocation().getX())+1));
 				tempTarget.setTileRow(((int)(piece.getLocation().getY())-1));
-				targets.add(tempTarget);
+				targets.add(tempTarget);*/
+				targets.add(getTileAt(piece.getLocation().y-1,piece.getLocation().x-1));
+				targets.add(getTileAt(piece.getLocation().y-1,piece.getLocation().x+1));
 			}else if(piece.getLocation().getY() == 0){
-				tempTarget.setTileColumn(((int)(piece.getLocation().getX())+1));
+				/*tempTarget.setTileColumn(((int)(piece.getLocation().getX())+1));
 				tempTarget.setTileRow(((int)(piece.getLocation().getY())+1));
 				targets.add(tempTarget);
 				tempTarget = new Tile();
 				tempTarget.setTileColumn(((int)(piece.getLocation().getX())-1));
 				tempTarget.setTileRow(((int)(piece.getLocation().getY())+1));
-				targets.add(tempTarget);
+				targets.add(tempTarget);*/
+				targets.add(getTileAt(piece.getLocation().y+1,piece.getLocation().x+1));
+				targets.add(getTileAt(piece.getLocation().y+1,piece.getLocation().x-1));
 			}else{
-				tempTarget.setTileColumn(((int)(piece.getLocation().getX())-1));
+				/*tempTarget.setTileColumn(((int)(piece.getLocation().getX())-1));
 				tempTarget.setTileRow(((int)(piece.getLocation().getY())-1));
 				targets.add(tempTarget);
 				tempTarget = new Tile();
@@ -209,24 +229,38 @@ public class Board extends JPanel {
 				tempTarget = new Tile();
 				tempTarget.setTileColumn(((int)(piece.getLocation().getX())-1));
 				tempTarget.setTileRow(((int)(piece.getLocation().getY())+1));
-				targets.add(tempTarget);
+				targets.add(tempTarget);*/
+				targets.add(getTileAt(piece.getLocation().y-1,piece.getLocation().x-1));
+				targets.add(getTileAt(piece.getLocation().y-1,piece.getLocation().x+1));
+				targets.add(getTileAt(piece.getLocation().y+1,piece.getLocation().x+1));
+				targets.add(getTileAt(piece.getLocation().y+1,piece.getLocation().x-1));
 			}
 		}
 		for(Tile target: getTargets()){
 			for(Tile tiles: getTiles()){
 				if(target.getTileColumn() == tiles.getTileColumn() && target.getTileRow() == tiles.getTileRow()){
 					target.setHasPiece(tiles.HasPiece());
+					if(tiles.HasPiece())
+						target.setPiece(tiles.getPiece());
 				}
 			}
 		}
-		ArrayList<Tile> remove = new ArrayList<Tile>(targets);
-		int index = 0;
-		for(Tile t: remove){
-			if(t.HasPiece()){
-				targets.remove(index);
-				index--;
+		
+		ArrayList<Tile> tempTargets = new ArrayList<Tile>(targets);
+		for(Tile t: tempTargets) {
+			if(t.HasPiece()) {
+				Piece tempPiece = t.getPiece();
+				targets.remove(t);
+				if(!piece.getColor().equals(tempPiece.getColor())) {
+					int colDiff = tempPiece.getLocation().x - piece.getLocation().x;
+					int rowDiff = tempPiece.getLocation().y - piece.getLocation().y;
+					System.out.println(rowDiff + " " + colDiff);
+					System.out.println(tempPiece);
+					Tile tempTile = getTileAt(tempPiece.getLocation().y + colDiff, tempPiece.getLocation().x + rowDiff);
+					if(tempTile != null && !tempTile.HasPiece())
+						targets.add(getTileAt(tempPiece.getLocation().y + colDiff, tempPiece.getLocation().x + rowDiff));				
+				}
 			}
-			index++;
 		}
 	}
 
@@ -356,6 +390,7 @@ public class Board extends JPanel {
 				if(row == c.getTileRow() && column == c.getTileColumn() && t.getTileRow() == c.getTileRow() && t.getTileColumn() == c.getTileColumn()) {
 					validTarget = true;
 					t.setHasPiece(true);
+					t.setPiece(selectedPiece);
 				}
 			}
 		}
@@ -365,6 +400,8 @@ public class Board extends JPanel {
 			if((row == 0 && selectedPiece.getColor() == Color.white) || (row == 7 && selectedPiece.getColor() == Color.red)){
 				selectedPiece.setKing(true);
 			}
+			getTileAt(selectedPiece.getLocation().y,selectedPiece.getLocation().x).setHasPiece(false);
+			getTileAt(selectedPiece.getLocation().y,selectedPiece.getLocation().x).setPiece(null);
 			selectedPiece.setLocation(target);
 			resetTargets();
 			selectedPiece = null;
@@ -446,13 +483,13 @@ public class Board extends JPanel {
 			g.drawRect(leftCoord, topCoord, width, height);
 		}
 	}
-	
-	
+
+
 	// This will remove a piece from the board.
-	public void remove(Piece remove) {
-		//pieces.remove(remove);
+	public void removePiece(Piece remove) {
+		pieces.remove(remove);
 	}
-	
+
 	// Returns the tile at given row and column.
 	public Tile getTileAt(int row, int col) {
 		for (Tile t : tiles) {
@@ -461,7 +498,7 @@ public class Board extends JPanel {
 		}
 		return null;
 	}
-	
+
 	public void resetTargets(){
 		targets.removeAll(targets);
 	}

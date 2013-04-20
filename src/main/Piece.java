@@ -86,5 +86,10 @@ public class Piece {
          g.drawOval(centerX, centerY, width, height);
          g.drawOval(centerX, centerY, width-5, height-5);
 	}
+	
+	@Override
+	public String toString() {
+		return (location.y + " " + location.x + " " + index);
+	}
 
 }
