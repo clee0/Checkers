@@ -55,7 +55,7 @@ public class GameActionTests {
 		
 		//Test the bottom-left corner movement 
 		board.clearPieces();
-		Piece cornerPiece = new Piece(0,7, Color.white);
+		Piece cornerPiece = new Piece(0,7, Color.BLACK);
 		cornerPiece.setKing(false);
 		board.calcTargets(cornerPiece,cornerPiece.isKing());
 		targets = board.getTargets();
@@ -67,7 +67,6 @@ public class GameActionTests {
 		cornerPiece.setColor(Color.red);
 		board.calcTargets(cornerPiece,cornerPiece.isKing());
 		targets = board.getTargets();
-		System.out.println(targets.get(0).getTileRow());
 		assertEquals(1,targets.size());
 		assertTrue(targets.contains(new Tile(1,6)));
 	
@@ -75,13 +74,16 @@ public class GameActionTests {
 
 	@Test
 	public void testAdvancedTargetSelection() {
+		
+		board.clearPieces();
 
 		//Testing one that can jump a piece
-		Piece piece15 = pieces.get(15);
-		Piece jumpedPiece = new Piece(4, 3, Color.red);
+		Piece piece15 = new Piece(4, 5, Color.BLACK);
+		Piece jumpedPiece = new Piece(3, 4, Color.RED);
 
 		//Add the new piece to the set location
 		board.getPieces().add(jumpedPiece);
+		board.getPieces().add(piece15);
 		board.calcTargets(piece15, piece15.isKing());
 		targets = board.getTargets();
 		assertEquals(2, targets.size());
@@ -90,8 +92,6 @@ public class GameActionTests {
 
 
 		//Testing one that could potentially double jump a piece
-		board.getPieces().remove(5);
-		board.getPieces().remove(7);
 
 		//We made room for the piece to double jump to two different spaces
 		board.calcTargets(piece15, piece15.isKing());
@@ -103,10 +103,12 @@ public class GameActionTests {
 		assertTrue( targets.contains(new Tile(4, 5)) );
 		
 		// Make sure pieces cannot jump friendly pieces
-		Piece piece19 = pieces.get(19);
-		board.calcTargets(piece19, piece19.isKing());
+		Piece ally = new Piece(5,4,Color.BLACK);
+		board.getPieces().add(ally);
+		board.calcTargets(piece15, piece15.isKing());
 		targets = board.getTargets();
-		assertEquals(0, targets.size());
+		assertEquals(1, targets.size());
+		assertTrue(targets.contains(new Tile(3,2)));
 	}
 
 	@Test
@@ -154,7 +156,6 @@ public class GameActionTests {
 		king.setLocation(new Point(7,0));
 		board.calcTargets(king,king.isKing());
 		targets = board.getTargets();
-		System.out.println(targets.get(0).getTileRow());
 		assertEquals(1,targets.size());
 		assertTrue(targets.contains(new Tile(1,6)));
 
@@ -168,13 +169,15 @@ public class GameActionTests {
 
 	@Test
 	public void testAdvancedKingTargetSelection() {
+		
+		board.clearPieces();
 
 		// Add a king
-		Piece king = new Piece(5,2,Color.RED);
+		Piece king = new Piece(2,5,Color.RED);
 		king.setKing(true);
 		
 		// Add an opponent piece, test jump
-		Piece victim1 = new Piece(4,1,Color.BLACK);
+		Piece victim1 = new Piece(1,4,Color.BLACK);
 		board.getPieces().add(victim1);
 		board.calcTargets(king,king.isKing());
 		targets = board.getTargets();
@@ -185,7 +188,7 @@ public class GameActionTests {
 		assertTrue(targets.contains(new Tile(6,3)));
 		
 		// Add a second opponent piece, test backwards jump
-		Piece victim2 = new Piece(6,3,Color.BLACK);
+		Piece victim2 = new Piece(3,6,Color.BLACK);
 		board.getPieces().add(victim2);
 		board.calcTargets(king,king.isKing());
 		targets = board.getTargets();
@@ -196,7 +199,7 @@ public class GameActionTests {
 		assertTrue(targets.contains(new Tile(7,4)));
 		
 		// Add a third opponent piece, test double jump
-		Piece victim3 = new Piece(2,1,Color.BLACK);
+		Piece victim3 = new Piece(1,2,Color.BLACK);
 		board.getPieces().add(victim3);
 		board.calcTargets(king,king.isKing());
 		targets = board.getTargets();
@@ -208,19 +211,19 @@ public class GameActionTests {
 		assertTrue(targets.contains(new Tile(1,3)));
 		
 		// Add a friendly piece, ensure king cannot jump
-		Piece ally = new Piece(4,3,Color.RED);
+		Piece ally = new Piece(3,4,Color.RED);
 		board.getPieces().add(ally);
 		board.calcTargets(king,king.isKing());
 		targets = board.getTargets();
-		assertEquals(4,targets.size());
+		assertEquals(3,targets.size());
 		assertTrue(targets.contains(new Tile(3,0)));
 		assertTrue(targets.contains(new Tile(6,1)));
-		assertTrue(targets.contains(new Tile(6,3)));
-		assertTrue(targets.contains(new Tile(1,3)));
+		assertTrue(targets.contains(new Tile(7,4)));
 	}
 	
 	@Test
 	public void testRemove() {
+		board.clearPieces();
 		// Add pieces to the board.
 		Piece remove1 = new Piece(0, 0, Color.BLACK);
 		Piece remove2 = new Piece(0, 2, Color.BLACK);
@@ -241,14 +244,14 @@ public class GameActionTests {
 		board.getPieces().add(remove8);
 		
 		// Remove the pieces added.
-		board.remove(remove1);
-		board.remove(remove2);
-		board.remove(remove3);
-		board.remove(remove4);
-		board.remove(remove5);
-		board.remove(remove6);
-		board.remove(remove7);
-		board.remove(remove8);
+		board.removePiece(remove1);
+		board.removePiece(remove2);
+		board.removePiece(remove3);
+		board.removePiece(remove4);
+		board.removePiece(remove5);
+		board.removePiece(remove6);
+		board.removePiece(remove7);
+		board.removePiece(remove8);
 		
 		// Check if the tiles have a piece on them.
 		assertFalse(board.getTileAt(0, 0).HasPiece());
@@ -270,12 +273,12 @@ public class GameActionTests {
 		board.clearPieces();
 		
 		// Add a test piece
-		Piece piece = new Piece(5,2,Color.BLACK);
+		Piece piece = new Piece(2,5,Color.BLACK);
 		board.getPieces().add(piece);
 		
 		// Test move function
-		assertTrue(board.getTileAt(5,2).HasPiece());
 		board.setSelectedPiece(piece);
+		board.calcTargets(piece,piece.isKing());
 		board.checkLocation(4, 1);
 		assertTrue(board.getTileAt(4,1).HasPiece());
 		assertFalse(board.getTileAt(5,2).HasPiece());
@@ -288,14 +291,14 @@ public class GameActionTests {
 		// Test kinging (all 8 possible kinging tiles)
 		board.clearPieces();
 		
-		Piece black1 = new Piece(1,0,Color.BLACK);
-		Piece black2 = new Piece(1,2,Color.BLACK);
-		Piece black3 = new Piece(1,4,Color.BLACK);
-		Piece black4 = new Piece(1,6,Color.BLACK);
-		Piece red1 = new Piece(6,1,Color.RED);
-		Piece red2 = new Piece(6,3,Color.RED);
-		Piece red3 = new Piece(6,5,Color.RED);
-		Piece red4 = new Piece(6,7,Color.RED);
+		Piece black1 = new Piece(0,1,Color.BLACK);
+		Piece black2 = new Piece(2,1,Color.BLACK);
+		Piece black3 = new Piece(4,1,Color.BLACK);
+		Piece black4 = new Piece(6,1,Color.BLACK);
+		Piece red1 = new Piece(1,6,Color.RED);
+		Piece red2 = new Piece(3,6,Color.RED);
+		Piece red3 = new Piece(5,6,Color.RED);
+		Piece red4 = new Piece(7,6,Color.RED);
 		board.getPieces().add(black1);
 		board.getPieces().add(black2);
 		board.getPieces().add(black3);
@@ -306,20 +309,28 @@ public class GameActionTests {
 		board.getPieces().add(red4);
 		
 		board.setSelectedPiece(black1);
+		board.calcTargets(black1,black1.isKing());
 		board.checkLocation(0,1);
 		board.setSelectedPiece(black2);
+		board.calcTargets(black2,black3.isKing());
 		board.checkLocation(0,3);
 		board.setSelectedPiece(black3);
+		board.calcTargets(black3,black3.isKing());
 		board.checkLocation(0,5);
 		board.setSelectedPiece(black4);
+		board.calcTargets(black4,black4.isKing());
 		board.checkLocation(0,7);
 		board.setSelectedPiece(red1);
+		board.calcTargets(red1,red1.isKing());
 		board.checkLocation(7,0);
 		board.setSelectedPiece(red2);
+		board.calcTargets(red2,red2.isKing());
 		board.checkLocation(7,2);
 		board.setSelectedPiece(red3);
+		board.calcTargets(red3,red3.isKing());
 		board.checkLocation(7,4);
 		board.setSelectedPiece(red4);
+		board.calcTargets(red4,red4.isKing());
 		board.checkLocation(7,6);
 		
 		assertTrue(black1.isKing());
@@ -339,8 +350,8 @@ public class GameActionTests {
 		board.clearPieces();
 		
 		// Add two pieces
-		Piece jumper = new Piece(5,2,Color.BLACK);
-		Piece victim = new Piece(4,3,Color.RED);
+		Piece jumper = new Piece(2,5,Color.BLACK);
+		Piece victim = new Piece(3,4,Color.RED);
 		board.getPieces().add(jumper);
 		board.getPieces().add(victim);
 		assertTrue(board.getTileAt(5,2).HasPiece());

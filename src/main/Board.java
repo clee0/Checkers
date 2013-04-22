@@ -103,7 +103,7 @@ public class Board extends JPanel {
 				if (tempPiece.getLocation().getY() < 3) {
 					tempPiece.setColor(Color.red);
 				} else {
-					tempPiece.setColor(Color.white);
+					tempPiece.setColor(Color.BLACK);
 				}
 				pieces.add(tempPiece);
 				tiles.get(i).setPiece(tempPiece);
@@ -115,121 +115,60 @@ public class Board extends JPanel {
 
 	public void calcTargets(Piece piece, boolean king){
 		targets = new ArrayList<Tile>();
-		//tempTarget = new Tile();
+		
+		for(Tile t:tiles) {
+			for(Piece p:pieces) {
+				Point tileLoc = new Point(t.getTileColumn(),t.getTileRow());
+				if(tileLoc.equals(p.getLocation())) {
+					t.setHasPiece(true);
+					t.setPiece(p);
+					break;
+				}
+				else {
+					t.setHasPiece(false);
+					t.setPiece(null);
+				}
+			}
+		}
 
 		if(king == false){
-			if(piece.getColor() == Color.white){
+			if(piece.getColor() == Color.BLACK){
 				if(piece.getLocation().getX() == 0){
-					/*tempTarget.setTileColumn(((int)(piece.getLocation().getX())+1));
-					tempTarget.setTileRow(((int)(piece.getLocation().getY())-1));
-					targets.add(tempTarget);*/
 					targets.add(getTileAt(piece.getLocation().y-1,piece.getLocation().x+1));
 				}else if(piece.getLocation().getX() == 7){
-					/*tempTarget.setTileColumn(((int)(piece.getLocation().getX())-1));
-					tempTarget.setTileRow(((int)(piece.getLocation().getY())-1));
-					targets.add(tempTarget);*/
 					targets.add(getTileAt(piece.getLocation().y-1,piece.getLocation().x-1));
 				}else{
-					/*tempTarget.setTileColumn(((int)(piece.getLocation().getX())-1));
-					tempTarget.setTileRow(((int)(piece.getLocation().getY())-1));
-					targets.add(tempTarget);
-					tempTarget = new Tile();
-					tempTarget.setTileColumn(((int)(piece.getLocation().getX())+1));
-					tempTarget.setTileRow(((int)(piece.getLocation().getY())-1));
-					targets.add(tempTarget);*/
 					targets.add(getTileAt(piece.getLocation().y-1,piece.getLocation().x-1));
 					targets.add(getTileAt(piece.getLocation().y-1,piece.getLocation().x+1));
 				}
 			}else{
 				if(piece.getLocation().getX() == 0){
-					/*tempTarget.setTileColumn(((int)(piece.getLocation().getX())+1));
-					tempTarget.setTileRow(((int)(piece.getLocation().getY())+1));
-					targets.add(tempTarget);*/
 					targets.add(getTileAt(piece.getLocation().y+1,piece.getLocation().x+1));
 				}else if(piece.getLocation().getX() == 7){
-					/*tempTarget.setTileColumn(((int)(piece.getLocation().getX())-1));
-					tempTarget.setTileRow(((int)(piece.getLocation().getY())+1));
-					targets.add(tempTarget);*/
 					targets.add(getTileAt(piece.getLocation().y+1,piece.getLocation().x-1));
 				}else{
-					/*tempTarget.setTileColumn(((int)(piece.getLocation().getX())-1));
-					tempTarget.setTileRow(((int)(piece.getLocation().getY())+1));
-					targets.add(tempTarget);
-					tempTarget = new Tile();
-					tempTarget.setTileColumn(((int)(piece.getLocation().getX())+1));
-					tempTarget.setTileRow(((int)(piece.getLocation().getY())+1));
-					targets.add(tempTarget);*/
 					targets.add(getTileAt(piece.getLocation().y+1,piece.getLocation().x-1));
 					targets.add(getTileAt(piece.getLocation().y+1,piece.getLocation().x+1));
 				}
 			}
 		}else{
 			if(piece.getLocation().getX() == 0 && piece.getLocation().getY() != 7){
-				/*tempTarget.setTileColumn(((int)(piece.getLocation().getX())+1));
-				tempTarget.setTileRow(((int)(piece.getLocation().getY())-1));
-				targets.add(tempTarget);
-				tempTarget = new Tile();
-				tempTarget.setTileColumn(((int)(piece.getLocation().getX())+1));
-				tempTarget.setTileRow(((int)(piece.getLocation().getY())+1));
-				targets.add(tempTarget);*/
 				targets.add(getTileAt(piece.getLocation().y-1,piece.getLocation().x+1));
 				targets.add(getTileAt(piece.getLocation().y+1,piece.getLocation().x+1));
 			}else if(piece.getLocation().getX() == 0 && piece.getLocation().getY() == 7){
-				/*tempTarget.setTileColumn(((int)(piece.getLocation().getX())+1));
-				tempTarget.setTileRow(((int)(piece.getLocation().getY())-1));
-				targets.add(tempTarget);*/
 				targets.add(getTileAt(piece.getLocation().y-1,piece.getLocation().x+1));
 			}else if(piece.getLocation().getX() == 7 && piece.getLocation().getY() != 0){
-				/*tempTarget.setTileColumn(((int)(piece.getLocation().getX())-1));
-				tempTarget.setTileRow(((int)(piece.getLocation().getY())-1));
-				targets.add(tempTarget);
-				tempTarget = new Tile();
-				tempTarget.setTileColumn(((int)(piece.getLocation().getX())-1));
-				tempTarget.setTileRow(((int)(piece.getLocation().getY())+1));
-				targets.add(tempTarget);*/
 				targets.add(getTileAt(piece.getLocation().y-1,piece.getLocation().x-1));
 				targets.add(getTileAt(piece.getLocation().y+1,piece.getLocation().x-1));
 			}else if(piece.getLocation().getX() == 7 && piece.getLocation().getY() == 0){
-				/*tempTarget.setTileColumn(((int)(piece.getLocation().getX())-1));
-				tempTarget.setTileRow(((int)(piece.getLocation().getY())+1));
-				targets.add(tempTarget);*/
 				targets.add(getTileAt(piece.getLocation().y+1,piece.getLocation().x-1));
 			}else if(piece.getLocation().getY() == 7){
-				/*tempTarget.setTileColumn(((int)(piece.getLocation().getX())-1));
-				tempTarget.setTileRow(((int)(piece.getLocation().getY())-1));
-				targets.add(tempTarget);
-				tempTarget = new Tile();
-				tempTarget.setTileColumn(((int)(piece.getLocation().getX())+1));
-				tempTarget.setTileRow(((int)(piece.getLocation().getY())-1));
-				targets.add(tempTarget);*/
 				targets.add(getTileAt(piece.getLocation().y-1,piece.getLocation().x-1));
 				targets.add(getTileAt(piece.getLocation().y-1,piece.getLocation().x+1));
 			}else if(piece.getLocation().getY() == 0){
-				/*tempTarget.setTileColumn(((int)(piece.getLocation().getX())+1));
-				tempTarget.setTileRow(((int)(piece.getLocation().getY())+1));
-				targets.add(tempTarget);
-				tempTarget = new Tile();
-				tempTarget.setTileColumn(((int)(piece.getLocation().getX())-1));
-				tempTarget.setTileRow(((int)(piece.getLocation().getY())+1));
-				targets.add(tempTarget);*/
 				targets.add(getTileAt(piece.getLocation().y+1,piece.getLocation().x+1));
 				targets.add(getTileAt(piece.getLocation().y+1,piece.getLocation().x-1));
 			}else{
-				/*tempTarget.setTileColumn(((int)(piece.getLocation().getX())-1));
-				tempTarget.setTileRow(((int)(piece.getLocation().getY())-1));
-				targets.add(tempTarget);
-				tempTarget = new Tile();
-				tempTarget.setTileColumn(((int)(piece.getLocation().getX())+1));
-				tempTarget.setTileRow(((int)(piece.getLocation().getY())-1));
-				targets.add(tempTarget);
-				tempTarget = new Tile();
-				tempTarget.setTileColumn(((int)(piece.getLocation().getX())+1));
-				tempTarget.setTileRow(((int)(piece.getLocation().getY())+1));
-				targets.add(tempTarget);
-				tempTarget = new Tile();
-				tempTarget.setTileColumn(((int)(piece.getLocation().getX())-1));
-				tempTarget.setTileRow(((int)(piece.getLocation().getY())+1));
-				targets.add(tempTarget);*/
 				targets.add(getTileAt(piece.getLocation().y-1,piece.getLocation().x-1));
 				targets.add(getTileAt(piece.getLocation().y-1,piece.getLocation().x+1));
 				targets.add(getTileAt(piece.getLocation().y+1,piece.getLocation().x+1));
@@ -254,16 +193,15 @@ public class Board extends JPanel {
 				if(!piece.getColor().equals(tempPiece.getColor())) {
 					int colDiff = tempPiece.getLocation().x - piece.getLocation().x;
 					int rowDiff = tempPiece.getLocation().y - piece.getLocation().y;
-					System.out.println(rowDiff + " " + colDiff);
-					System.out.println(tempPiece);
-					Tile tempTile = getTileAt(tempPiece.getLocation().y + colDiff, tempPiece.getLocation().x + rowDiff);
-					if(tempTile != null && !tempTile.HasPiece())
-						targets.add(getTileAt(tempPiece.getLocation().y + colDiff, tempPiece.getLocation().x + rowDiff));				
+					Tile tempTile = getTileAt(tempPiece.getLocation().y + rowDiff, tempPiece.getLocation().x + colDiff);
+					if(tempTile != null && !tempTile.HasPiece()) {
+						targets.add(getTileAt(tempPiece.getLocation().y + rowDiff, tempPiece.getLocation().x + colDiff));		
+					}
 				}
 			}
 		}
 	}
-
+/*
 	public void canJump(Piece piece, boolean king){
 		targets = new ArrayList<Tile>();
 		tempTarget = new Tile();
@@ -382,7 +320,7 @@ public class Board extends JPanel {
 			index++;
 		}
 	}
-
+*/
 	public void checkLocation(int row, int column) {
 		boolean validTarget = false;
 		for(Tile c : this.getTargets()) {
@@ -397,7 +335,7 @@ public class Board extends JPanel {
 		if(validTarget) {
 			Point target;
 			target = new Point(column, row);
-			if((row == 0 && selectedPiece.getColor() == Color.white) || (row == 7 && selectedPiece.getColor() == Color.red)){
+			if((row == 0 && selectedPiece.getColor() == Color.BLACK) || (row == 7 && selectedPiece.getColor() == Color.red)){
 				selectedPiece.setKing(true);
 			}
 			getTileAt(selectedPiece.getLocation().y,selectedPiece.getLocation().x).setHasPiece(false);
@@ -435,7 +373,7 @@ public class Board extends JPanel {
 								//canJump(selectedPiece, selectedPiece.isKing());
 								//}
 								if(targets.size()!= 0){
-									tiles.setHasPiece(false);
+									//tiles.setHasPiece(false);
 								}
 							}
 						}

@@ -16,6 +16,7 @@ public class Piece {
 	public Piece(int row, int column, Color color) {
 		this.location = new Point(row, column);
 		this.color = color;
+		this.king = false;
 	}
 	
 	public Piece(){
