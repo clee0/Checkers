@@ -26,19 +26,19 @@ public class Board extends JPanel {
 	private static final int NUMCOLUMNS = 8;
 	private ArrayList<Tile> targets;
 	private Piece selectedPiece;
-	private JPanel board;
+	private CheckerGame game;
 
-	public Board() {
-		board = new JPanel();
+	public Board(CheckerGame game) {
+		this.game = game;
 		tiles = new ArrayList<Tile>();
 		pieces = new ArrayList<Piece>();	
 		targets = new ArrayList<Tile>();
 		selectedPiece = null;
-		setSize(new Dimension(800, 800));
+		setSize(new Dimension(400, 400));
 		Graphics g = null;
 		loadBoard();
 		addMouseListener(new BoardListener());
-		board.paintAll(g);
+		paintAll(g);
 	}
 
 	public void loadBoard() {
@@ -445,14 +445,49 @@ public class Board extends JPanel {
 			g.setColor(Color.black);
 			g.drawRect(leftCoord, topCoord, width, height);
 		}
+
+		checkGameStatus();
 	}
-	
-	
+
+	public void checkGameStatus() {
+		if ( !game.getGameOver() ) {
+
+			int redPieces = 0;
+			int whitePieces = 0;
+			int redKings = 0;
+			int whiteKings = 0;
+
+			for (Piece p : pieces) {
+				if ( p.getColor().equals(Color.red) ) {
+					redPieces++;
+					if ( p.isKing() )
+						redKings++;
+				} else if ( p.getColor().equals(Color.white) ) {
+					whitePieces++;
+					if ( p.isKing() )
+						whiteKings++;
+				}
+			}
+			if ( whitePieces == 0 ) {
+				game.setGameOver("Red");
+			} else if ( redPieces == 0 ) {
+				game.setGameOver("White");
+			} else {
+				game.setNumRedPieces(redPieces);
+				game.setNumWhitePieces(whitePieces);
+				game.setNumRedKings(redKings);
+				game.setNumWhiteKings(whiteKings);
+			}
+		} else {
+			repaint();
+		}
+	}
+
 	// This will remove a piece from the board.
 	public void remove(Piece remove) {
 		//pieces.remove(remove);
 	}
-	
+
 	// Returns the tile at given row and column.
 	public Tile getTileAt(int row, int col) {
 		for (Tile t : tiles) {
@@ -461,7 +496,7 @@ public class Board extends JPanel {
 		}
 		return null;
 	}
-	
+
 	public void resetTargets(){
 		targets.removeAll(targets);
 	}
@@ -490,4 +525,5 @@ public class Board extends JPanel {
 	public void setSelectedPiece(Piece selectedPiece) {
 		this.selectedPiece = selectedPiece;
 	}
+
 }

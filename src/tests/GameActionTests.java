@@ -23,7 +23,7 @@ public class GameActionTests {
 	@Before
 	public void setup() {
 		game = new CheckerGame();
-		board = new Board();
+		board = new Board(game);
 		pieces = board.getPieces();
 		targets = new ArrayList<Tile>();
 	}
