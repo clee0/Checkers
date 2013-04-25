@@ -9,14 +9,21 @@ public class Tile {
 	private int index;
 	private boolean hasPiece;
 	private boolean endTile;
-
-	public Tile(){
-
+	private Piece piece;
+	private boolean isJumpTile;
+	private Piece jumpingPiece;
+	
+	public Tile() {
+		
 	}
-
+	
 	public Tile(int row, int column) {
 		tileRow = row;
 		tileCol = column;
+
+		isJumpTile = false;
+		jumpingPiece = null;
+		hasPiece = false;
 	}
 
 	public void draw(Graphics g, Board board, int width, int height){
@@ -89,4 +96,34 @@ public class Tile {
 	public boolean HasPiece(){
 		return this.hasPiece;
 	}
+
+	public Piece getPiece() {
+		return piece;
+	}
+
+	public void setPiece(Piece piece) {
+		this.piece = piece;
+	}
+	
+	public boolean isJumpTile() {
+		return isJumpTile;
+	}
+
+	public void setJumpTile(boolean isJumpTile) {
+		this.isJumpTile = isJumpTile;
+	}
+
+	public Piece getJumpingPiece() {
+		return jumpingPiece;
+	}
+
+	public void setJumpingPiece(Piece jumpingPiece) {
+		this.jumpingPiece = jumpingPiece;
+	}
+
+	@Override
+	public String toString() {
+		return (tileRow + " " + tileCol + " " + index + " " + hasPiece);
+	}
+
 }

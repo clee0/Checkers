@@ -45,6 +45,7 @@ public class CheckerGame extends JFrame{
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		menuBar.add(createFileMenu());
+		setVisible(true);
 	}
 
 	public void setup(){
@@ -96,7 +97,7 @@ public class CheckerGame extends JFrame{
 		setNumWhiteKings(0);
 		setNumRedPieces(12);
 		setNumRedKings(0);
-		setWhoseTurn("RED");		
+		setWhoseTurn("WHITE");		
 		
 		redPanel.add(redPiecesLabel);
 		redPanel.add(redPieces);
@@ -149,7 +150,6 @@ public class CheckerGame extends JFrame{
 	public void newGame() {
 		this.dispose();
 		CheckerGame game = new CheckerGame();
-		game.setVisible(true);
 		run();
 	}
 	
@@ -191,7 +191,6 @@ public class CheckerGame extends JFrame{
 	
 	public static void main(String[] args) {
 		CheckerGame game = new CheckerGame();
-		game.setVisible(true);
 		game.run();
 	}
 	
