@@ -1,5 +1,8 @@
 package main;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -42,7 +45,24 @@ public class Board extends JPanel {
 		setSize(new Dimension(400, 400));
 		Graphics g = null;
 		loadBoard();
-		addMouseListener(new BoardListener());
+		addMouseListener(new BoardListener());		
+		/*clearPieces();
+		
+		// Add two pieces
+		Piece jumper = new Piece(2,5,Color.BLACK);
+		Piece victim = new Piece(3,4,Color.RED);
+		getPieces().add(jumper);
+		getPieces().add(victim);
+		
+		// Jump, check piece is removed and tiles are updated
+		setSelectedPiece(jumper);
+		startTargets(jumper);
+		checkLocation(3,4);
+		//assertTrue(board.getTileAt(3,4).HasPiece());
+		//assertFalse(board.getTileAt(4,3).HasPiece());
+		//assertFalse(board.getTileAt(5,2).HasPiece());
+		 * 
+		 */
 		paintAll(g);
 	}
 
@@ -282,6 +302,11 @@ public class Board extends JPanel {
 				t.setJumpTile(false);
 				t.setJumpingPiece(null);
 			}
+			if(game.getWhoseTurn().equals("RED")){
+				game.setWhoseTurn("WHITE");
+			}else{
+				game.setWhoseTurn("RED");
+			}
 			repaint();
 		}
 		else if(targets.size() == 0){
@@ -308,15 +333,12 @@ public class Board extends JPanel {
 					if(row == tiles.getTileRow() && column == tiles.getTileColumn() && tiles.HasPiece() == true){
 						for(Piece p: getPieces()){
 							if(p.getLocation().getY() == row && p.getLocation().getX() == column){
-								selectedPiece = p;
-								startTargets(selectedPiece);
-
-								nJump(selectedPiece);
-								//if(targets.size() == 0){
-								//canJump(selectedPiece, selectedPiece.isKing());
-								//}
-								if(targets.size()!= 0){
-									//tiles.setHasPiece(false);
+								if((p.getColor() == Color.RED && game.getWhoseTurn().equals("RED"))||
+										(p.getColor() == Color.BLACK && game.getWhoseTurn().equals("WHITE"))){
+									selectedPiece = p;
+									startTargets(selectedPiece);
+									nJump(selectedPiece);
+								
 								}
 							}
 						}

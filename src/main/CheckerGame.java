@@ -47,22 +47,6 @@ public class CheckerGame extends JFrame{
 		menuBar.add(createFileMenu());
 		setVisible(true);
 	}
-
-	public void setup(){
-		
-	}
-
-	public void turn(){
-		
-	}
-	
-	public void nextPlayer(){
-		
-	}
-	
-	public void splash(){
-		
-	}
 	
 	private void createBottomPanel() {
 		JPanel bottomPanel = new JPanel(new GridLayout(0, 3));
@@ -178,6 +162,9 @@ public class CheckerGame extends JFrame{
 		this.whoseTurnField.setText(whoseTurn);
 	}
 	
+	public String getWhoseTurn(){
+		return this.whoseTurn;
+	}
 	public void setGameOver(String winner) {
 		this.gameOver = true;
 		JOptionPane popup = new JOptionPane();

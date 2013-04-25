@@ -35,11 +35,11 @@ public class Tile {
 		g.drawRect(leftCoord, topCoord, width, height);
 
 		//shows index of cell 
-		//g.setColor(Color.green);
+		g.setColor(Color.green);
 		//g.drawString(String.valueOf(this.getIndex()), leftCoord +20, topCoord +25);
 
 		//show if King row
-		//g.drawString(String.valueOf(this.isEndTile()), leftCoord +15, topCoord + 15);
+		g.drawString(String.valueOf(this.HasPiece()), leftCoord +15, topCoord + 15);
 
 	}
 

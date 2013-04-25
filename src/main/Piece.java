@@ -73,7 +73,7 @@ public class Piece {
 		g.drawOval(centerX, centerY, width, height);
 		g.drawOval(centerX, centerY, width-5, height-5);
 		if(this.isKing()){
-			g.drawString("K", centerX+20, centerY+25);
+			g.drawString("K", centerX + (width/2), centerY + (height/2));
 		}
 		g.setColor(Color.orange);
 		g.drawString(String.valueOf(this.index), centerX+20, centerY+25);
