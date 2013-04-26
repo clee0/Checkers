@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -26,6 +27,7 @@ import main.*;
 public class Board extends JPanel {
 	private ArrayList<Tile> tiles;
 	private ArrayList<Piece> pieces;
+	private Map<Integer, ArrayList<Tile>> tileSnapshots;
 	private static final int NUMROWS = 8;
 	private static final int NUMCOLUMNS = 8;
 	private ArrayList<Tile> targets;
@@ -37,6 +39,7 @@ public class Board extends JPanel {
 
 	public Board(CheckerGame game) {
 		this.game = game;
+		tileSnapshots = new HashMap<Integer,ArrayList<Tile>>();
 		tiles = new ArrayList<Tile>();
 		pieces = new ArrayList<Piece>();	
 		targets = new ArrayList<Tile>();
@@ -111,8 +114,8 @@ public class Board extends JPanel {
 		}
 
 		this.visited = new Boolean[tiles.size()];
-		for(int i = 0; i < visited.length; i++) {
-			visited[i] = false;
+		for(int i = 0; i < this.visited.length; i++) {
+			this.visited[i] = false;
 		}
 		/***********************************************************************
 		 * PiecesCreation - creates the array list of
@@ -145,7 +148,7 @@ public class Board extends JPanel {
 		this.targets = calcTargets(piece.getLocation(), piece.getColor(), piece.isKing());
 	}
 
-	public ArrayList<Tile> calcTargets(Point startLoc, Color color, boolean king){
+	public ArrayList<Tile> calcTargets(Point startLoc, Color color, Boolean king){
 		ArrayList<Tile> targets = new ArrayList<Tile>();
 
 		for(Tile t:tiles) {
@@ -169,16 +172,16 @@ public class Board extends JPanel {
 			if(color == Color.BLACK){
 				if(startLoc.x == 0){
 					targets.add(getTileAt(startLoc.y-1,startLoc.x+1));
-				}else if(startLoc.getX() == 7){
+				}else if(startLoc.x == 7){
 					targets.add(getTileAt(startLoc.y-1,startLoc.x-1));
 				}else{
 					targets.add(getTileAt(startLoc.y-1,startLoc.x-1));
 					targets.add(getTileAt(startLoc.y-1,startLoc.x+1));
 				}
 			}else{
-				if(startLoc.getX() == 0){
+				if(startLoc.x == 0){
 					targets.add(getTileAt(startLoc.y+1,startLoc.x+1));
-				}else if(startLoc.getX() == 7){
+				}else if(startLoc.x == 7){
 					targets.add(getTileAt(startLoc.y+1,startLoc.x-1));
 				}else{
 					targets.add(getTileAt(startLoc.y+1,startLoc.x-1));
@@ -186,20 +189,20 @@ public class Board extends JPanel {
 				}
 			}
 		}else{
-			if(startLoc.getX() == 0 && startLoc.getY() != 7){
+			if(startLoc.x == 0 && startLoc.x != 7){
 				targets.add(getTileAt(startLoc.y-1,startLoc.x+1));
 				targets.add(getTileAt(startLoc.y+1,startLoc.x+1));
-			}else if(startLoc.getX() == 0 && startLoc.getY() == 7){
+			}else if(startLoc.x == 0 && startLoc.x == 7){
 				targets.add(getTileAt(startLoc.y-1,startLoc.x+1));
-			}else if(startLoc.getX() == 7 && startLoc.getY() != 0){
+			}else if(startLoc.x == 7 && startLoc.y != 0){
 				targets.add(getTileAt(startLoc.y-1,startLoc.x-1));
 				targets.add(getTileAt(startLoc.y+1,startLoc.x-1));
-			}else if(startLoc.getX() == 7 && startLoc.getY() == 0){
+			}else if(startLoc.x == 7 && startLoc.y == 0){
 				targets.add(getTileAt(startLoc.y+1,startLoc.x-1));
-			}else if(startLoc.getY() == 7){
+			}else if(startLoc.y == 7){
 				targets.add(getTileAt(startLoc.y-1,startLoc.x-1));
 				targets.add(getTileAt(startLoc.y-1,startLoc.x+1));
-			}else if(startLoc.getY() == 0){
+			}else if(startLoc.y == 0){
 				targets.add(getTileAt(startLoc.y+1,startLoc.x+1));
 				targets.add(getTileAt(startLoc.y+1,startLoc.x-1));
 			}else{
@@ -209,6 +212,7 @@ public class Board extends JPanel {
 				targets.add(getTileAt(startLoc.y+1,startLoc.x-1));
 			}
 		}
+		
 		for(Tile target: getTargets()){
 			System.out.println("for loop7");
 			for(Tile tiles: getTiles()){
@@ -226,6 +230,10 @@ public class Board extends JPanel {
 		this.jumpTargets.clear();
 		for(Tile t: tempTargets) {
 			System.out.println("for loop9");
+			if(t == null) {
+				targets.remove(t);
+				continue;
+			}
 			if(t.HasPiece()) {
 				Piece tempPiece = t.getPiece();
 				targets.remove(t);
@@ -239,6 +247,33 @@ public class Board extends JPanel {
 						tempTile.setJumpTile(true);
 						targets.add(tempTile);
 						this.jumpTargets.add(tempTile);
+						/*ArrayList<Tile> tempTiles = new ArrayList<Tile>();
+						
+						for(Tile t2:this.tiles) {
+							Tile tileClone = new Tile(t2.getTileRow(),t2.getTileColumn());
+							tileClone.setColor(t2.getColor());
+							tileClone.setEndTile(t2.isEndTile());
+							tileClone.setHasPiece(t2.isHasPiece());
+							tileClone.setIndex(t2.getIndex());
+							tileClone.setJumpingPiece(t2.getJumpingPiece());
+							tileClone.setJumpTile(t2.isJumpTile());
+							tileClone.setPiece(t2.getPiece());
+							tempTiles.add(tileClone);
+						}
+						
+						this.tileSnapshots.put(tempTile.getIndex(), tempTiles);
+						tempTile.setJumpingPiece(null);
+						/*System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+						for(Tile t2:this.tileSnapshots.get(tempTile)) {
+							System.out.println(t2);
+							if(t2.isJumpTile())
+								System.out.println("******************************************");
+						}
+						for(Tile t2:tiles) {
+							System.out.println(t2);
+							if(t2.isJumpTile())
+								System.out.println("******************************************");
+						}*/
 					}
 				}
 			}
@@ -249,7 +284,7 @@ public class Board extends JPanel {
 
 	// n-jump detection
 	public void nJump(Piece piece) {
-
+		
 		ArrayList<Tile> jumpTargets = new ArrayList<Tile>(this.jumpTargets);
 		ArrayList<Tile> newTargets = new ArrayList<Tile>();
 		if(jumpTargets.isEmpty())
@@ -261,10 +296,10 @@ public class Board extends JPanel {
 			if(!this.jumpTargets.isEmpty()) {
 				for(Tile t2:this.jumpTargets) {
 					System.out.println("for loop11");
-					if(!visited[t2.getIndex()]) {
+					if(!this.visited[t2.getIndex()] && !this.targets.contains(t2)) {
 						this.targets.add(t2);
 						newTargets.add(t2);
-						visited[t2.getIndex()] = true;
+						this.visited[t2.getIndex()] = true;
 					}
 				}
 				this.jumpTargets = new ArrayList<Tile>(newTargets);
@@ -273,9 +308,9 @@ public class Board extends JPanel {
 		}
 
 		this.visited = new Boolean[tiles.size()];
-		for(int i = 0; i < visited.length; i++) {
+		for(int i = 0; i < this.visited.length; i++) {
 			System.out.println("for loop12");
-			visited[i] = false;
+			this.visited[i] = false;
 		}
 	}
 
@@ -356,7 +391,6 @@ public class Board extends JPanel {
 									selectedPiece = p;
 									startTargets(selectedPiece);
 									nJump(selectedPiece);
-								
 								}
 							}
 						}
@@ -491,7 +525,7 @@ public class Board extends JPanel {
 	}
 
 	public Boolean[] getVisited() {
-		return visited;
+		return this.visited;
 	}
 
 	public void setVisited(Boolean[] visited) {

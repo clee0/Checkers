@@ -121,6 +121,10 @@ public class Tile {
 		this.jumpingPiece = jumpingPiece;
 	}
 
+	public boolean isHasPiece() {
+		return hasPiece;
+	}
+
 	@Override
 	public String toString() {
 		return (tileRow + " " + tileCol + " " + index + " " + hasPiece);

@@ -27,17 +27,6 @@ public class GameActionTests {
 		pieces = board.getPieces();
 		targets = new ArrayList<Tile>();
 	}
-	
-	/*@Test
-	public void test1() {
-		Piece p1 = new Piece(3,6,Color.BLACK);
-		Piece p2 = new Piece(4,5,Color.RED);
-		Piece p3 = new Piece(4,3,Color.RED);
-		Piece p4 = new Piece(4,1,Color.RED);
-		board.startTargets(p1);
-		//board.nJump(p1);
-		assertEquals(4,board.getTargets().size());
-	}*/
 
 	// TESTS THE calcTargets() function in the Board class
 	@Test
@@ -182,7 +171,7 @@ public class GameActionTests {
 		assertTrue(targets.contains(new Tile(6,1)));
 	}
 
-	/*@Test
+	@Test
 	public void testAdvancedKingTargetSelection() {
 		
 		board.clearPieces();
@@ -190,6 +179,7 @@ public class GameActionTests {
 		// Add a king
 		Piece king = new Piece(2,5,Color.RED);
 		king.setKing(true);
+		board.getPieces().add(king);
 		
 		// Add an opponent piece, test jump
 		Piece victim1 = new Piece(1,4,Color.BLACK);
@@ -207,6 +197,8 @@ public class GameActionTests {
 		board.getPieces().add(victim2);
 		board.startTargets(king);
 		targets = board.getTargets();
+		for(Tile t:board.getTargets())
+			System.out.println(t);
 		assertEquals(4,targets.size());
 		assertTrue(targets.contains(new Tile(3,0)));
 		assertTrue(targets.contains(new Tile(4,3)));
@@ -217,20 +209,22 @@ public class GameActionTests {
 		Piece victim3 = new Piece(1,2,Color.BLACK);
 		board.getPieces().add(victim3);
 		
-		Boolean visited[] = new Boolean[board.getTiles().size()];
-		for(int i = 0; i < visited.length; i++)
-			visited[i] = false;
-		board.setVisited(visited);
+		Boolean visited1[] = new Boolean[board.getTiles().size()];
+		for(int i = 0; i < visited1.length; i++)
+			visited1[i] = false;
+		board.setVisited(visited1);
 		
 		board.startTargets(king);
 		board.nJump(king);
 		targets = board.getTargets();
+		for(Tile t:targets)
+			System.out.println(t);
 		assertEquals(5,targets.size());
 		assertTrue(targets.contains(new Tile(3,0)));
 		assertTrue(targets.contains(new Tile(4,3)));
 		assertTrue(targets.contains(new Tile(6,1)));
-		assertTrue(targets.contains(new Tile(6,3)));
-		assertTrue(targets.contains(new Tile(1,3)));
+		assertTrue(targets.contains(new Tile(7,4)));
+		assertTrue(targets.contains(new Tile(1,2)));
 		
 		// Add a friendly piece, ensure king cannot jump
 		Piece ally = new Piece(3,4,Color.RED);
@@ -241,7 +235,7 @@ public class GameActionTests {
 		assertTrue(targets.contains(new Tile(3,0)));
 		assertTrue(targets.contains(new Tile(6,1)));
 		assertTrue(targets.contains(new Tile(7,4)));
-	}*/
+	}
 	
 	@Test
 	public void testRemove() {
