@@ -2,6 +2,7 @@ package main;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
 
 public class Tile {
 	private int tileRow,tileCol;
@@ -11,7 +12,7 @@ public class Tile {
 	private boolean endTile;
 	private Piece piece;
 	private boolean isJumpTile;
-	private Piece jumpingPiece;
+	private ArrayList<Piece> jumpingPiece;
 	
 	public Tile() {
 		
@@ -22,7 +23,7 @@ public class Tile {
 		tileCol = column;
 
 		isJumpTile = false;
-		jumpingPiece = null;
+		jumpingPiece = new ArrayList<Piece>();
 		hasPiece = false;
 	}
 
@@ -113,12 +114,16 @@ public class Tile {
 		this.isJumpTile = isJumpTile;
 	}
 
-	public Piece getJumpingPiece() {
+	public ArrayList<Piece> getJumpingPiece() {
 		return jumpingPiece;
 	}
 
-	public void setJumpingPiece(Piece jumpingPiece) {
+	public void setJumpingPiece(ArrayList<Piece> jumpingPiece) {
 		this.jumpingPiece = jumpingPiece;
+	}
+	
+	public void addJumpingPiece(Piece piece) {
+		this.jumpingPiece.add(piece);
 	}
 
 	public boolean isHasPiece() {
