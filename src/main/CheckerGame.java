@@ -136,7 +136,7 @@ public class CheckerGame extends JFrame{
 		CheckerGame game = new CheckerGame();
 		JOptionPane popup = new JOptionPane();
 		String message = "Welcome to checkers, White player starts.";
-		popup.showMessageDialog(this, message, "Start", JOptionPane.INFORMATION_MESSAGE);
+		popup.showMessageDialog(game, message, "Start", JOptionPane.INFORMATION_MESSAGE);
 		run();
 	}
 	
