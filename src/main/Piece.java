@@ -75,8 +75,8 @@ public class Piece {
 		if(this.isKing()){
 			g.drawString("K", centerX + (width/2), centerY + (height/2));
 		}
-		g.setColor(Color.orange);
-		g.drawString(String.valueOf(this.index), centerX+20, centerY+25);
+		//g.setColor(Color.orange);
+		//g.drawString(String.valueOf(this.index), centerX+20, centerY+25);
 	}
 
 	public void drawHighlight(Graphics g, Board board, int width, int height){

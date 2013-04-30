@@ -364,12 +364,12 @@ public class Board extends JPanel {
 						for(Piece p: getPieces()){
 //							System.out.println("for loop19");
 							if(p.getLocation().getY() == row && p.getLocation().getX() == column){
-								//if((p.getColor() == Color.RED && game.getWhoseTurn().equals("RED"))||
-										//(p.getColor() == Color.BLACK && game.getWhoseTurn().equals("WHITE"))){
+								if((p.getColor() == Color.RED && game.getWhoseTurn().equals("RED"))||
+									(p.getColor() == Color.BLACK && game.getWhoseTurn().equals("WHITE"))){
 									selectedPiece = p;
 									startTargets(selectedPiece);
 									nJump(selectedPiece);
-								//}
+								}
 							}
 						}
 					}

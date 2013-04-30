@@ -134,6 +134,9 @@ public class CheckerGame extends JFrame{
 	public void newGame() {
 		this.dispose();
 		CheckerGame game = new CheckerGame();
+		JOptionPane popup = new JOptionPane();
+		String message = "Welcome to checkers, White player starts.";
+		popup.showMessageDialog(this, message, "Start", JOptionPane.INFORMATION_MESSAGE);
 		run();
 	}
 	
@@ -178,6 +181,9 @@ public class CheckerGame extends JFrame{
 	
 	public static void main(String[] args) {
 		CheckerGame game = new CheckerGame();
+		JOptionPane popup = new JOptionPane();
+		String message = "Welcome to checkers, White player starts.";
+		popup.showMessageDialog(game, message, "Start", JOptionPane.INFORMATION_MESSAGE);
 		game.run();
 	}
 	
